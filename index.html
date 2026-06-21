@@ -19,8 +19,8 @@
   <section class="hero">
     <h1>A Markdown editor that stays out of your way.</h1>
     <div class="hero-actions" id="download">
-      <a class="btn btn-primary" href="#" onclick="return false;">macOS&nbsp;·&nbsp;.dmg</a>
-      <a class="btn btn-primary" href="#" onclick="return false;">Windows&nbsp;·&nbsp;.exe</a>
+      <a id="dl-mac" class="btn btn-primary" href="https://github.com/tech-qa-e6r/voidless/releases/latest">macOS&nbsp;·&nbsp;.dmg</a>
+      <a id="dl-win" class="btn btn-primary" href="https://github.com/tech-qa-e6r/voidless/releases/latest">Windows&nbsp;·&nbsp;.exe</a>
     </div>
 
     <img class="screenshot" src="assets/screenshot.png" alt="Voidless editor" />
@@ -67,5 +67,21 @@
     </div>
   </section>
 
+  <script>
+    // Point the download buttons at the latest published release's installers.
+    // Falls back to the releases page if the API is unreachable or nothing is published.
+    (async function () {
+      const repo = "tech-qa-e6r/voidless";
+      try {
+        const res = await fetch("https://api.github.com/repos/" + repo + "/releases/latest");
+        if (!res.ok) return;
+        const assets = (await res.json()).assets || [];
+        const url = (re) => (assets.find((a) => re.test(a.name)) || {}).browser_download_url;
+        const dmg = url(/\.dmg$/i), exe = url(/-setup\.exe$/i);
+        if (dmg) document.getElementById("dl-mac").href = dmg;
+        if (exe) document.getElementById("dl-win").href = exe;
+      } catch (e) { /* keep fallback links */ }
+    })();
+  </script>
 </body>
 </html>
