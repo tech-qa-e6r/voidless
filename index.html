@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voidless — markdown editor</title>
+  <meta name="description" content="Voidless — fast local markdown editor: live preview, templates, Google Drive sync, plugins." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ── Nav ── -->
+  <header class="nav">
+    <div class="nav-brand">
+      <span class="dot"></span> Voidless
+    </div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+    </nav>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <h1>A local markdown editor<br /><span class="accent">that stays out of your way</span></h1>
+    <p class="lead">
+      Live preview, templates, Google Drive sync and plugins.
+      Files are plain markdown on your disk. No subscriptions, no cloud by default.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#download">Download free</a>
+    </div>
+
+    <img class="screenshot" src="assets/screenshot.png" alt="Voidless editor" />
+  </section>
+
+  <!-- ── Features ── -->
+  <section id="features" class="features">
+    <h2>Features</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Live preview</h3>
+        <p>Markdown renders inline — no split pane. Move the cursor into markup to see the syntax.</p>
+      </article>
+      <article class="card">
+        <h3>Templates</h3>
+        <p>Variables like <code>{{date}}</code>, <code>{{week}}</code>, auto filename, folder-bound templates.</p>
+      </article>
+      <article class="card">
+        <h3>Google Drive sync</h3>
+        <p>OAuth2 PKCE, auto-sync on start and every 5 minutes. Works offline.</p>
+      </article>
+      <article class="card">
+        <h3>Alarms</h3>
+        <p>Write <code>@⏰ 14:30</code> in a note — get a banner and a chime at the right time.</p>
+      </article>
+      <article class="card">
+        <h3>Base tables</h3>
+        <p>Notes as a database: table and kanban views over frontmatter, bulk field fill.</p>
+      </article>
+      <article class="card">
+        <h3>Plugins</h3>
+        <p>Anki trainer and Web Parser built in. Architecture is open for new modules.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── Download ── -->
+  <section id="download" class="download">
+    <h2>Download Voidless</h2>
+    <p class="lead">Free and open source.</p>
+    <div class="dl-buttons">
+      <a class="btn btn-primary" href="#" onclick="return false;">
+        macOS&nbsp;·&nbsp;.dmg
+      </a>
+      <a class="btn btn-primary" href="#" onclick="return false;">
+        Windows&nbsp;·&nbsp;.exe
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <span>Voidless</span>
+  </footer>
+</body>
+</html>
