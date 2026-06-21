@@ -18,7 +18,26 @@ permissions:
   contents: write
 
 jobs:
+  # Pick the build number ONCE (shared by both matrix jobs so they produce the same
+  # version and merge into one release). Per-day counter that resets daily: count
+  # today's existing releases (vYY.M.D.N, drafts included) and take max + 1.
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      build_number: ${{ steps.bn.outputs.build_number }}
+    steps:
+      - name: Compute build number
+        id: bn
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          core="$(date -u +%y).$(date -u +%-m).$(date -u +%-d)"
+          max=$(gh release list --repo "${{ github.repository }}" --limit 200 --json tagName \
+                --jq "[.[].tagName | select(startswith(\"v${core}.\")) | ltrimstr(\"v${core}.\") | tonumber] | max // 0")
+          echo "build_number=$((max + 1))" >> "$GITHUB_OUTPUT"
+
   release:
+    needs: prepare
     strategy:
       fail-fast: false
       matrix:
