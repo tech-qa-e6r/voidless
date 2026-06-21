@@ -170,6 +170,20 @@ code {
 }
 .card p { color: var(--text-dim); font-size: 14px; }
 
+/* ── Contact ── */
+.contact {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 28px 90px;
+  text-align: center;
+}
+.contact h2 {
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+.contact p { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; }
+
 @media (max-width: 560px) {
   .hero { padding-top: 56px; }
 }
