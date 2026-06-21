@@ -1,0 +1,86 @@
+name: Release
+
+# Builds Voidless from the PRIVATE source repo and publishes signed installers +
+# the updater manifest (latest.json) as a release in THIS public repo. The app's
+# in-app updater points at this repo's latest release.
+#
+# Required secrets (in this public repo's Settings → Secrets → Actions):
+#   SOURCE_TOKEN                        PAT with read access to the private source repo
+#   TAURI_SIGNING_PRIVATE_KEY           contents of ~/.tauri/voidless_updater.key
+#   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  the key password
+#   VITE_GOOGLE_CLIENT_ID               Google OAuth client id (build-time)
+#   VITE_GOOGLE_CLIENT_SECRET           Google OAuth client secret (build-time)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout private source
+        uses: actions/checkout@v4
+        with:
+          repository: tech-qa-e6r/alt_text_editor
+          token: ${{ secrets.SOURCE_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: ./alt-text-editor/src-tauri -> target
+
+      - name: Install dependencies
+        working-directory: alt-text-editor
+        run: pnpm install --frozen-lockfile
+
+      # Stamp the date-based version (YY.M.D+N) into tauri.conf.json before building.
+      # On CI the per-day counter file is absent, so N is always 1.
+      - name: Stamp version
+        working-directory: alt-text-editor
+        run: node scripts/stamp-version.mjs
+
+      - name: Read stamped version
+        id: ver
+        shell: bash
+        working-directory: alt-text-editor
+        run: echo "version=$(node -p "require('./src-tauri/tauri.conf.json').version.replace('+','.')")" >> "$GITHUB_OUTPUT"
+
+      # tauri-action builds + signs, then creates/updates the release for this tag and
+      # uploads installers, updater bundles (.sig) and a merged latest.json across the
+      # macOS + Windows matrix. Draft so it can be reviewed before going live.
+      - name: Build & release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.VITE_GOOGLE_CLIENT_SECRET }}
+        with:
+          projectPath: alt-text-editor
+          tagName: v${{ steps.ver.outputs.version }}
+          releaseName: Voidless v${{ steps.ver.outputs.version }}
+          releaseDraft: true
+          includeUpdaterJson: true
