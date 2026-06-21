@@ -22,7 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        include:
+          # macOS: universal binary so one .dmg runs on both Intel and Apple Silicon.
+          - os: macos-latest
+            args: "--target universal-apple-darwin"
+            rust-targets: "aarch64-apple-darwin,x86_64-apple-darwin"
+          - os: windows-latest
+            args: ""
+            rust-targets: ""
 
     runs-on: ${{ matrix.os }}
 
@@ -45,6 +52,8 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-targets }}
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
@@ -84,3 +93,4 @@ jobs:
           releaseName: Voidless v${{ steps.ver.outputs.version }}
           releaseDraft: true
           includeUpdaterJson: true
+          args: ${{ matrix.args }}
