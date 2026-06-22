@@ -206,24 +206,16 @@ code {
   margin-bottom: 40px;
 }
 .changelog-empty { color: var(--text-dim); font-size: 15px; }
-.release {
-  border-left: 1px solid var(--border-2);
-  padding: 0 0 34px 24px;
-  position: relative;
-}
-.release::before {
-  content: "";
-  position: absolute;
-  left: -4.5px; top: 7px;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(164, 101, 0, 0.7);
+.release { padding: 0 0 28px 4px; }
+.release + .release {
+  border-top: 1px solid var(--border);
+  margin-top: 28px;
+  padding-top: 28px;
 }
 .release-head {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 12px;
 }
 .release-ver {
@@ -231,6 +223,7 @@ code {
   font-size: 16px;
   color: var(--text);
 }
+.release-sep { color: var(--text-mute); }
 .release-date { color: var(--text-mute); font-size: 13px; }
 .release-body { color: var(--text-dim); font-size: 14px; }
 .release-body ul { list-style: none; padding: 0; }

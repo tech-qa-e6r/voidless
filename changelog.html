@@ -81,7 +81,7 @@
             : '<div class="release-body"><p style="color:var(--text-mute)">No notes.</p></div>';
           return '<article class="release">'
             + '<div class="release-head"><span class="release-ver">' + ver + "</span>"
-            + (date ? '<span class="release-date">' + date + "</span>" : "")
+            + (date ? '<span class="release-sep">→</span><span class="release-date">' + date + "</span>" : "")
             + "</div>" + body + "</article>";
         }).join("");
       } catch (e) {
