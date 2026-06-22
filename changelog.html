@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — Voidless</title>
+  <meta name="description" content="Voidless changelog — what changed in each version." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ── Nav ── -->
+  <header class="nav">
+    <a class="nav-brand" href="index.html">
+      <span class="dot"></span> Voidless
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <!-- ── Changelog ── -->
+  <section class="changelog">
+    <h2>Changelog</h2>
+    <div id="releases" class="changelog-list">
+      <p class="changelog-empty">Loading…</p>
+    </div>
+  </section>
+
+  <script>
+    // Pull every published release and render its notes. Drafts are invisible to
+    // the anonymous GitHub API, so unpublished releases never leak here — the
+    // changelog goes live the moment a release is published.
+    (async function () {
+      const repo = "tech-qa-e6r/voidless";
+      const root = document.getElementById("releases");
+
+      const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      const inline = (s) => escapeHtml(s)
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+      // Minimal Markdown: headings, bullet lists, paragraphs (enough for release notes).
+      function renderMarkdown(md) {
+        const lines = md.replace(/\r\n/g, "\n").split("\n");
+        let out = "", inList = false;
+        const closeList = () => { if (inList) { out += "</ul>"; inList = false; } };
+        for (const raw of lines) {
+          const line = raw.replace(/\s+$/, "");
+          if (!line.trim()) { closeList(); continue; }
+          const h = line.match(/^(#{1,6})\s+(.*)$/);
+          if (h) { closeList(); out += '<h4 class="release-subhead">' + inline(h[2]) + "</h4>"; continue; }
+          const li = line.match(/^[-*]\s+(.*)$/);
+          if (li) { if (!inList) { out += "<ul>"; inList = true; } out += "<li>" + inline(li[1]) + "</li>"; continue; }
+          closeList();
+          out += "<p>" + inline(line) + "</p>";
+        }
+        closeList();
+        return out;
+      }
+
+      const fmtDate = (iso) => {
+        try { return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }); }
+        catch (e) { return ""; }
+      };
+
+      try {
+        const res = await fetch("https://api.github.com/repos/" + repo + "/releases?per_page=100");
+        if (!res.ok) throw new Error("api");
+        const releases = (await res.json()).filter((r) => !r.draft);
+        if (releases.length === 0) {
+          root.innerHTML = '<p class="changelog-empty">No releases yet.</p>';
+          return;
+        }
+        root.innerHTML = releases.map((r) => {
+          const ver = escapeHtml(r.tag_name || r.name || "");
+          const date = fmtDate(r.published_at);
+          const body = (r.body || "").trim()
+            ? '<div class="release-body">' + renderMarkdown(r.body.trim()) + "</div>"
+            : '<div class="release-body"><p style="color:var(--text-mute)">No notes.</p></div>';
+          return '<article class="release">'
+            + '<div class="release-head"><span class="release-ver">' + ver + "</span>"
+            + (date ? '<span class="release-date">' + date + "</span>" : "")
+            + "</div>" + body + "</article>";
+        }).join("");
+      } catch (e) {
+        root.innerHTML = '<p class="changelog-empty">Couldn’t load releases. '
+          + '<a href="https://github.com/' + repo + '/releases" target="_blank" rel="noopener">View on GitHub</a>.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>
