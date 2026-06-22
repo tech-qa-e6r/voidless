@@ -134,6 +134,14 @@ code {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
 
+.stack {
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.02em;
+}
+
 /* ── Возможности ── */
 .features {
   max-width: 1000px;
