@@ -136,10 +136,10 @@ code {
 
 .divider {
   border: 0;
-  width: 64px;
+  width: min(1000px, 90vw);
   height: 1px;
-  background: var(--border-2);
-  margin: 30px auto;
+  background: linear-gradient(to right, transparent, var(--border-2) 18%, var(--border-2) 82%, transparent);
+  margin: 36px auto;
 }
 
 .stack {
