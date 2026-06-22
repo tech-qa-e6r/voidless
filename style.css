@@ -134,6 +134,14 @@ code {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
 
+.divider {
+  border: 0;
+  width: 64px;
+  height: 1px;
+  background: var(--border-2);
+  margin: 30px auto;
+}
+
 .stack {
   margin-top: 18px;
   font-family: var(--mono);
