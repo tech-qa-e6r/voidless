@@ -181,10 +181,27 @@ code {
 .card h3 {
   font-family: var(--mono);
   font-size: 15px;
-  color: var(--text);
+  color: var(--accent-hi);
   margin-bottom: 9px;
 }
 .card p { color: var(--text-dim); font-size: 14px; }
+.card ul { list-style: none; padding: 0; margin: 0; }
+.card li {
+  position: relative;
+  padding-left: 14px;
+  margin: 6px 0;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.card li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--text-mute);
+}
+.card li strong { color: var(--text); font-weight: 600; }
+.card ul ul { margin: 4px 0 4px 2px; }
 
 /* ── Contact ── */
 .contact {

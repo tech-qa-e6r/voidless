@@ -40,27 +40,250 @@
     <div class="grid">
       <article class="card">
         <h3>Live preview</h3>
-        <p>Markdown renders inline — no split pane. Move the cursor into markup to see the syntax.</p>
+        <ul>
+          <li><strong>Inline rendering, no split pane</strong> — markdown renders right in the text.</li>
+          <li><strong>Reveal on caret</strong>: move the cursor into markup to see the raw syntax; leave and it renders again.</li>
+          <li>Works line/block-wise, doesn't repaint the whole document.</li>
+        </ul>
       </article>
+
       <article class="card">
-        <h3>Templates</h3>
-        <p>Variables like <code>{{date}}</code>, <code>{{week}}</code>, auto filename, folder-bound templates.</p>
+        <h3>Basic markup</h3>
+        <ul>
+          <li>Headings <strong>H1–H3</strong> (styled sizes).</li>
+          <li><strong>Bold</strong> <code>**text**</code>, <em>italic</em> <code>*text*</code>.</li>
+          <li>Inline code <code>`code`</code>.</li>
+          <li>Horizontal rule <code>---</code> → rendered as <code>&lt;hr&gt;</code>.</li>
+          <li>Blockquotes.</li>
+          <li>Links — rendered as a compact widget (see Links &amp; URLs).</li>
+        </ul>
       </article>
+
+      <article class="card">
+        <h3>Extended markup</h3>
+        <ul>
+          <li><strong>Highlight</strong> <code>==text==</code> → yellow marker (<code>==</code> hidden).</li>
+          <li><strong>Strikethrough</strong> <code>~~text~~</code> (<code>Cmd/Ctrl+Shift+X</code>).</li>
+          <li><strong>Wiki-links</strong> <code>[[filename]]</code> — brackets hidden, clickable, autocomplete over vault files (incl. table cells).</li>
+          <li><strong>Alarms</strong> <code>@⏰ HH:MM</code> — always highlighted red.</li>
+          <li><strong>Images with width</strong> <code>![alt|400](path)</code> — width in px; relative paths and Windows drive-letter paths.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Lists &amp; tasks</h3>
+        <ul>
+          <li>Bulleted lists with smart <code>Enter</code> (continues the item).</li>
+          <li>Numbered lists: <strong>hierarchical numbering</strong> (1, 1.1, 1.2…), labels recomputed automatically.</li>
+          <li><strong>Checkboxes / task lists</strong> <code>- [ ]</code> / <code>- [x]</code>: clickable widget; done items struck through; smart Enter continuation.</li>
+          <li>List indent: <code>Tab</code> / <code>Shift+Tab</code>, correct for multi-line selection.</li>
+          <li>Move lines: <code>Ctrl+↑</code> / <code>Ctrl+↓</code>.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Tables (inline GFM)</h3>
+        <ul>
+          <li>Rendered as an interactive table right in the editor.</li>
+          <li>Edit cells by click; add/remove columns and rows.</li>
+          <li>Drag rows by grip; resize columns.</li>
+          <li>Cell-range selection, delete row range.</li>
+          <li>Wiki-links inside cells — clickable.</li>
+          <li><strong>Column config (option chips)</strong>: RMB on header → popover for bulk-fill and clear.</li>
+          <li>Column alignment (left/center/right).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Code &amp; embedded blocks</h3>
+        <ul>
+          <li><strong>Fenced code blocks</strong> with info-string (language); nested fences via a longer outer fence.</li>
+          <li><strong>Copy button</strong> on code blocks.</li>
+          <li>Built-in render blocks: <code>excalidraw</code> (embedded Excalidraw diagrams) and <code>univer</code> (embedded spreadsheet, UniverJS).</li>
+          <li>Block-renderer system extensible by plugins (a plugin registers its own language).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Links &amp; URLs</h3>
+        <ul>
+          <li>Links rendered as a <strong>compact label</strong> instead of the long URL.</li>
+          <li><strong>Smart URL shortening</strong>: <code>domain: last-segment</code>; special cases — Jira → <code>Jira: KEY-123</code>, Habr → <code>Habr: slug</code>.</li>
+          <li>Expands when the caret enters.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Frontmatter (YAML)</h3>
+        <ul>
+          <li><code>--- … ---</code> block at the top — concealed/folded in render.</li>
+          <li><strong>Frontmatter panel</strong>: edit key-value fields in a form.</li>
+          <li>List fields <code>[a, b, c]</code> → recognized as a select with options.</li>
+          <li>Special key <code>_fileName</code> in a template's frontmatter sets the file name and is stripped from content.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Alarms (reminders)</h3>
+        <ul>
+          <li>Syntax: <code>@⏰ 18:30</code> (today), <code>@⏰ 10.06 09:00</code> (this year), <code>@⏰ 10.06.2027 09:00</code> (specific date).</li>
+          <li><strong>Checker every 30s</strong> → red in-app banner + chime.</li>
+          <li><strong>Reveal</strong>: click the notification to jump to the alarm line.</li>
+          <li>Snooze (in-memory), fired-registry (~1h window against repeats).</li>
+          <li>Insert via <code>/</code> menu or Command palette.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Editor: behavior &amp; input</h3>
+        <ul>
+          <li><strong>Autosave</strong> (debounced); flush before switching files and on close.</li>
+          <li>Undo/Redo, find in document (<code>Cmd/Ctrl+F</code>).</li>
+          <li>Line numbers (toggle); editor font size and UI zoom (separate).</li>
+          <li><strong>Smart paste</strong>: collision-aware path resolution for pasted images/files.</li>
+          <li><strong>Command menu</strong> <code>/</code> at line start: quick inserts.</li>
+          <li>Autocomplete for wiki-links <code>[[</code>.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Command palette (<code>Cmd/Ctrl+P</code>)</h3>
+        <ul>
+          <li>Insert Checkbox / List / Table / Code Block.</li>
+          <li>Insert Date / Insert Time.</li>
+          <li>Toggle Strikethrough; Insert Alarm (⏰).</li>
+          <li>Open Flashcards (Anki); Open Web Parser.</li>
+          <li>Insert Excalidraw / Insert Univer.</li>
+          <li>+ plugin commands (dynamic).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Keyboard shortcuts</h3>
+        <ul>
+          <li><strong>Global</strong>: <code>Cmd+P</code> palette · <code>Cmd+F</code> search · <code>F1</code> templates · <code>Cmd+W</code> close tab · <code>Cmd+Shift+T</code> reopen tab · <code>Cmd+Alt+←/→</code> history · <code>Cmd+R</code>/<code>F5</code> reload · <code>Cmd+Alt+I</code> devtools.</li>
+          <li><strong>Editor</strong>: undo/redo, find, strikethrough, indent, smart Enter, <code>/</code> menu.</li>
+          <li><strong>Sidebar</strong>: <code>Cmd+X</code> cut · <code>Shift+click</code> range · <code>Alt+click</code> right split · <code>Cmd+click</code> new tab · RMB context menu.</li>
+          <li>Mouse side buttons — back/forward in history.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>File manager / sidebar</h3>
+        <ul>
+          <li><strong>Vault</strong> = root folder; recursive tree scan.</li>
+          <li>Create file, folder, Base file (<code>.base</code>).</li>
+          <li>Rename, delete (incl. multiple), move (drag).</li>
+          <li><strong>Cut / paste</strong> files: <code>Cmd+X</code> → RMB "Paste here".</li>
+          <li>Multi-select (<code>Shift+click</code> range).</li>
+          <li><strong>Colors &amp; icons</strong> for files/folders (persisted + synced).</li>
+          <li>Sort by name / created date; collapse/expand all; sidebar search.</li>
+          <li><strong>Folder templates</strong>: a template auto-applies when creating a file in a mapped folder.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Tabs, splits, navigation</h3>
+        <ul>
+          <li>Tabs per pane; close, reorder by drag; reopen closed tab (<code>Cmd+Shift+T</code>).</li>
+          <li><strong>Splits (panes)</strong>: flexible layout tree, vertical/horizontal.</li>
+          <li>Drag a tab to an edge → new split; to center → move as tab.</li>
+          <li>Resize dividers; open in new tab / right split.</li>
+          <li><strong>Per-pane navigation history</strong> (back/forward, mouse side buttons).</li>
+          <li>Session restored on startup (panes, tabs, active files, layout).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Base — notes as a database</h3>
+        <ul>
+          <li>Aggregates note frontmatter from a folder into a table/board (<code>.base</code> files).</li>
+          <li><strong>Table view</strong>: columns from frontmatter, sort by column.</li>
+          <li><strong>Cards / Kanban view</strong>: group by a field, custom group order.</li>
+          <li>Folder filter (include/exclude), record filter.</li>
+          <li><strong>Bulk-fill</strong>: mass-fill a column's value via popover.</li>
+          <li>Click a record to open its source file.</li>
+        </ul>
+      </article>
+
       <article class="card">
         <h3>Google Drive sync</h3>
-        <p>OAuth2 PKCE, auto-sync on start and every 5 minutes. Works offline.</p>
+        <ul>
+          <li><strong>OAuth2 PKCE</strong>, local redirect on port <code>1827</code>.</li>
+          <li>Scope <code>drive.file</code> (non-sensitive — no Google verification, no test-user cap).</li>
+          <li><strong>Auto-sync on start and every 5 minutes</strong>; works offline.</li>
+          <li>Move detection — no duplicates across devices (flip-flop protection).</li>
+          <li>Remote-edit detection via MD5 without downloading.</li>
+          <li><strong>Conflict resolution</strong>: keep original / keep conflicting copy.</li>
+          <li>Vault-meta (colors/icons/settings) synced across devices.</li>
+        </ul>
       </article>
-      <article class="card">
-        <h3>Alarms</h3>
-        <p>Write <code>@⏰ 14:30</code> in a note — get a banner and a chime at the right time.</p>
-      </article>
-      <article class="card">
-        <h3>Base tables</h3>
-        <p>Notes as a database: table and kanban views over frontmatter, bulk field fill.</p>
-      </article>
+
       <article class="card">
         <h3>Plugins</h3>
-        <p>Anki trainer and Web Parser built in. Architecture is open for new modules.</p>
+        <ul>
+          <li><strong>Plugin system</strong>: plugins from the <code>.plugins</code> folder inside the vault.</li>
+          <li>A plugin is arbitrary JS with app/Tauri access → <strong>requires user consent</strong> (once per plugin).</li>
+          <li>Plugins can add commands, block renderers (own languages), react to vault changes.</li>
+          <li>Reload plugins in settings.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Anki — flashcard trainer</h3>
+        <ul>
+          <li>Built-in, full-view. Store: <code>&lt;vault&gt;/.anki/cards.json</code>.</li>
+          <li><strong>SRS</strong> (spaced repetition): interval/reps/ease, lapse logic, due cards.</li>
+          <li><strong>Decks</strong>: create/delete, filter by deck.</li>
+          <li>Modes: Review / Add / Cards / Stats.</li>
+          <li><strong>Auto-translate via DeepL</strong>: RMB on a word → "Add to Anki".</li>
+          <li>Front/Back languages configurable; DeepL key stored locally.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Web Parser — link extractor</h3>
+        <ul>
+          <li>Built-in, full-view. Generic link extractor: sources (any sites) + keyword filters → pulls matching links (jobs, news, releases…).</li>
+          <li>Sources: <code>&lt;vault&gt;/Web Parser/sources.md</code>.</li>
+          <li><strong>Run stats</strong>: parsed / JS-skipped / skipped / 404 / 403.</li>
+          <li>Marks new results (vs previous run).</li>
+          <li><strong>CSV export</strong>, run log.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Templates</h3>
+        <ul>
+          <li>Templates folder (<code>.md</code> files), opened with <code>F1</code>.</li>
+          <li><strong>Variables</strong>: <code>{{date}}</code>, <code>{{dateRU}}</code>, <code>{{time}}</code>, <code>{{week}}</code> (Mon–Fri of the week).</li>
+          <li><code>_fileName</code> in frontmatter sets the file name.</li>
+          <li><strong>Folder templates</strong> — auto-applied per folder.</li>
+          <li>Template field editor; sync vault to template.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Settings</h3>
+        <ul>
+          <li>Tabs: <strong>Editor / Plugins / Shortcuts / About</strong>.</li>
+          <li>Editor: font size, UI zoom, line numbers, templates folder, folder templates, help references.</li>
+          <li>Plugins: loaded plugins, built-in blocks, reload, Anki/DeepL settings.</li>
+          <li>Shortcuts: full reference (macOS + Windows).</li>
+          <li>About: version, license, third-party libraries.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>System</h3>
+        <ul>
+          <li><strong>Auto-update</strong>: checks on startup → "Update available" banner with install + restart.</li>
+          <li>Date-based versioning <code>YY.M.D.BUILD</code>.</li>
+          <li><strong>File watcher</strong>: tracks on-disk changes; guards against echo-saves (iCloud/sync folders).</li>
+          <li>Diagnostic log in <code>&lt;vault&gt;/.artifacts</code>.</li>
+          <li>Persistence via Tauri store; CSP enabled.</li>
+          <li>License: <strong>MIT + Commons Clause</strong> (free to use and modify; reselling prohibited). © 2026 Dmitrii M.</li>
+        </ul>
       </article>
     </div>
   </section>
