@@ -203,6 +203,29 @@ code {
 .card li strong { color: var(--text); font-weight: 600; }
 .card ul ul { margin: 4px 0 4px 2px; }
 
+/* ── Feature groups ── */
+.feature-group {
+  margin-bottom: 48px;
+}
+.feature-group:last-child {
+  margin-bottom: 0;
+}
+.group-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  border-bottom: 1px solid var(--border-2);
+  padding-bottom: 10px;
+  margin: 0 0 16px;
+}
+.card--placeholder {
+  opacity: 0.35;
+  border-style: dashed;
+}
+
 /* ── Contact ── */
 .contact {
   max-width: 720px;
