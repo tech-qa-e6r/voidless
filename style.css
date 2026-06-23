@@ -262,7 +262,7 @@ code {
 
 /* ── Changelog ── */
 .changelog {
-  max-width: 760px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 70px 28px 90px;
 }
@@ -270,6 +270,45 @@ code {
   font-size: 28px;
   letter-spacing: -0.01em;
   margin-bottom: 40px;
+}
+.changes-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.changes-col-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  border-bottom: 1px solid var(--border-2);
+  padding-bottom: 10px;
+  margin: 0 0 24px;
+}
+.roadmap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.roadmap-list li {
+  position: relative;
+  padding-left: 16px;
+  margin: 8px 0;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.roadmap-list li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--text-mute);
+}
+@media (max-width: 640px) {
+  .changes-columns { grid-template-columns: 1fr; gap: 40px; }
 }
 .changelog-empty { color: var(--text-dim); font-size: 15px; }
 .release { padding: 0 0 28px 4px; }

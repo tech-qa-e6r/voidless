@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog — Voidless</title>
-  <meta name="description" content="Voidless changelog — what changed in each version." />
+  <title>Changes — Voidless</title>
+  <meta name="description" content="Voidless changelog and roadmap." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <!-- ── Nav ── -->
@@ -19,11 +19,25 @@
     </nav>
   </header>
 
-  <!-- ── Changelog ── -->
+  <!-- ── Changes ── -->
   <section class="changelog">
-    <h2>Changelog</h2>
-    <div id="releases" class="changelog-list">
-      <p class="changelog-empty">Loading…</p>
+    <h2>Changes</h2>
+    <div class="changes-columns">
+
+      <div class="changes-col">
+        <p class="changes-col-label">Released</p>
+        <div id="releases" class="changelog-list">
+          <p class="changelog-empty">Loading…</p>
+        </div>
+      </div>
+
+      <div class="changes-col">
+        <p class="changes-col-label">Planned</p>
+        <ul class="roadmap-list">
+          <li>Habit tracker</li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
@@ -85,7 +99,7 @@
             + "</div>" + body + "</article>";
         }).join("");
       } catch (e) {
-        root.innerHTML = '<p class="changelog-empty">Couldn’t load releases. '
+        root.innerHTML = '<p class="changelog-empty">Couldn\'t load releases. '
           + '<a href="https://github.com/' + repo + '/releases" target="_blank" rel="noopener">View on GitHub</a>.</p>';
       }
     })();

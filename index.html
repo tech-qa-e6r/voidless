@@ -15,7 +15,7 @@
       <span class="dot"></span> Voidless
     </a>
     <nav class="nav-links">
-      <a href="/changelog">Changelog</a>
+      <a href="/changelog">Changes</a>
     </nav>
   </header>
 
@@ -50,6 +50,17 @@
         </article>
 
         <article class="card">
+          <h3>Basic markup</h3>
+          <ul>
+            <li>Headings <strong>H1–H3</strong> (styled sizes).</li>
+            <li><strong>Bold</strong> <code>**text**</code>, <em>italic</em> <code>*text*</code>.</li>
+            <li>Inline code <code>`code`</code>.</li>
+            <li>Horizontal rule <code>---</code> → rendered as <code>&lt;hr&gt;</code>.</li>
+            <li>Links — shortened to a compact label.</li>
+          </ul>
+        </article>
+
+        <article class="card">
           <h3>Extended markup</h3>
           <ul>
             <li><strong>Highlight</strong> <code>==text==</code> → yellow marker.</li>
@@ -59,12 +70,68 @@
         </article>
 
         <article class="card">
-          <h3>Base</h3>
+          <h3>Lists &amp; tasks</h3>
           <ul>
-            <li>Aggregates note frontmatter from a folder into a table or board (<code>.base</code> files).</li>
-            <li><strong>Table view</strong>: columns from frontmatter fields, sort by column (asc/desc).</li>
-            <li><strong>Cards / Kanban view</strong>: group by field, custom group order.</li>
-            <li>Record filter.</li>
+            <li><strong>Numbered lists</strong>: hierarchical numbering (1, 1.1, 1.2…), labels recomputed automatically.</li>
+            <li><strong>Checkboxes</strong> <code>- [ ]</code> / <code>- [x]</code>: done items struck through and sink to the bottom; new items float up.</li>
+            <li><strong>Move lines</strong>: <code>Ctrl+↑</code> / <code>Ctrl+↓</code>.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Voidless Table</h3>
+          <ul>
+            <li>Rendered as an interactive <code>&lt;table&gt;</code> right in the editor.</li>
+            <li><strong>Wiki and regular links inside cells</strong> — clickable.</li>
+            <li><strong>Column config (option chips)</strong>: RMB on header → popover for bulk-fill and clear; options stored in a special config row.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Code &amp; embedded blocks</h3>
+          <ul>
+            <li><strong>Fenced code blocks</strong> <code>```</code> with language tag.</li>
+            <li><strong>Copy button</strong> with "Copied!" feedback.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Images</h3>
+          <ul>
+            <li><strong>Width control</strong> <code>![alt|400](path)</code> — width in px.</li>
+            <li>Relative and Windows drive-letter paths supported.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Alarms</h3>
+          <ul>
+            <li><code>@⏰ 18:30</code> — today at 18:30.</li>
+            <li><code>@⏰ 10.06 09:00</code> — June 10, current year.</li>
+            <li><code>@⏰ 10.06.2027 09:00</code> — specific date.</li>
+            <li><strong>Checker every 30s</strong> → red in-app banner + chime.</li>
+            <li><strong>Reveal</strong>: click the notification to jump to the alarm line (flash highlight).</li>
+            <li>Snooze (in-memory); fired-registry (~1h window against repeats).</li>
+            <li>Insert via <code>/</code> menu or Command palette.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Frontmatter</h3>
+          <ul>
+            <li><strong>Frontmatter panel</strong>: edit key-value fields in a form.</li>
+            <li>List fields <code>[a, b, c]</code> → recognized as a select with options.</li>
+            <li><code>_fileName</code> in a template's frontmatter sets the file name on creation.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>File manager</h3>
+          <ul>
+            <li><strong>Vault</strong> = root folder; recursive file tree.</li>
+            <li>Create file, folder, Base file (<code>.base</code>).</li>
+            <li><strong>Colors &amp; icons</strong> for files/folders — persisted and synced across devices.</li>
+            <li><strong>Folder templates</strong>: a template auto-applies when creating a file in a mapped folder.</li>
           </ul>
         </article>
 
@@ -78,12 +145,12 @@
         </article>
 
         <article class="card">
-          <h3>File manager</h3>
+          <h3>Base</h3>
           <ul>
-            <li><strong>Vault</strong> = root folder; recursive file tree.</li>
-            <li>Create file, folder, Base file (<code>.base</code>).</li>
-            <li><strong>Colors &amp; icons</strong> for files/folders — persisted and synced across devices.</li>
-            <li><strong>Folder templates</strong>: a template auto-applies when creating a file in a mapped folder.</li>
+            <li>Aggregates note frontmatter from a folder into a table or board (<code>.base</code> files).</li>
+            <li><strong>Table view</strong>: columns from frontmatter fields, sort by column (asc/desc).</li>
+            <li><strong>Cards / Kanban view</strong>: group by field, custom group order.</li>
+            <li>Record filter.</li>
           </ul>
         </article>
 
@@ -108,73 +175,6 @@
         </article>
 
         <article class="card">
-          <h3>Alarms</h3>
-          <ul>
-            <li><code>@⏰ 18:30</code> — today at 18:30.</li>
-            <li><code>@⏰ 10.06 09:00</code> — June 10, current year.</li>
-            <li><code>@⏰ 10.06.2027 09:00</code> — specific date.</li>
-            <li><strong>Checker every 30s</strong> → red in-app banner + chime.</li>
-            <li><strong>Reveal</strong>: click the notification to jump to the alarm line (flash highlight).</li>
-            <li>Snooze (in-memory); fired-registry (~1h window against repeats).</li>
-            <li>Insert via <code>/</code> menu or Command palette.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Code &amp; embedded blocks</h3>
-          <ul>
-            <li><strong>Fenced code blocks</strong> <code>```</code> with language tag.</li>
-            <li><strong>Copy button</strong> with "Copied!" feedback.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Frontmatter</h3>
-          <ul>
-            <li><strong>Frontmatter panel</strong>: edit key-value fields in a form.</li>
-            <li>List fields <code>[a, b, c]</code> → recognized as a select with options.</li>
-            <li><code>_fileName</code> in a template's frontmatter sets the file name on creation.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Voidless Table</h3>
-          <ul>
-            <li>Rendered as an interactive <code>&lt;table&gt;</code> right in the editor.</li>
-            <li><strong>Wiki and regular links inside cells</strong> — clickable.</li>
-            <li><strong>Column config (option chips)</strong>: RMB on header → popover for bulk-fill and clear; options stored in a special config row.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Lists &amp; tasks</h3>
-          <ul>
-            <li><strong>Numbered lists</strong>: hierarchical numbering (1, 1.1, 1.2…), labels recomputed automatically.</li>
-            <li><strong>Checkboxes</strong> <code>- [ ]</code> / <code>- [x]</code>: done items struck through and sink to the bottom; new items float up.</li>
-            <li><strong>Move lines</strong>: <code>Ctrl+↑</code> / <code>Ctrl+↓</code>.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Images</h3>
-          <ul>
-            <li><strong>Width control</strong> <code>![alt|400](path)</code> — width in px.</li>
-            <li>Relative and Windows drive-letter paths supported.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>System</h3>
-          <ul>
-            <li><strong>Auto-update</strong>: checks on startup → "Update available" banner with install + restart.</li>
-            <li>Date-based versioning <code>YY.MM.DD.BUILD</code>.</li>
-            <li>Diagnostic log in <code>&lt;vault&gt;/.artifacts</code>.</li>
-            <li>Toast notifications.</li>
-            <li>License: <strong>MIT + Commons Clause</strong> — free to use and modify; reselling prohibited.</li>
-          </ul>
-        </article>
-
-        <article class="card">
           <h3>Settings</h3>
           <ul>
             <li>Tabs: <strong>Editor / Plugins / Shortcuts / About</strong>.</li>
@@ -186,13 +186,13 @@
         </article>
 
         <article class="card">
-          <h3>Basic markup</h3>
+          <h3>System</h3>
           <ul>
-            <li>Headings <strong>H1–H3</strong> (styled sizes).</li>
-            <li><strong>Bold</strong> <code>**text**</code>, <em>italic</em> <code>*text*</code>.</li>
-            <li>Inline code <code>`code`</code>.</li>
-            <li>Horizontal rule <code>---</code> → rendered as <code>&lt;hr&gt;</code>.</li>
-            <li>Links — shortened to a compact label.</li>
+            <li><strong>Auto-update</strong>: checks on startup → "Update available" banner with install + restart.</li>
+            <li>Date-based versioning <code>YY.MM.DD.BUILD</code>.</li>
+            <li>Diagnostic log in <code>&lt;vault&gt;/.artifacts</code>.</li>
+            <li>Toast notifications.</li>
+            <li>License: <strong>MIT + Commons Clause</strong> — free to use and modify; reselling prohibited.</li>
           </ul>
         </article>
       </div>
