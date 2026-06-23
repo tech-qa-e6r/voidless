@@ -298,6 +298,29 @@
       <a class="btn btn-ghost" href="https://www.linkedin.com/in/tech-qa-e6r/" target="_blank" rel="noopener">LinkedIn</a>
       <!-- TODO: add support@voidless.app once the Zoho mailbox is set up -->
     </div>
+
+    <p class="install-note">The build isn't code-signed yet, so the OS may block the first launch. Here's how to allow it:</p>
+    <div class="grid install-grid">
+      <article class="card">
+        <h3>macOS — first launch</h3>
+        <ul>
+          <li>Gatekeeper may say the app <strong>"can't be opened"</strong> or <strong>"is damaged"</strong>.</li>
+          <li>Move <strong>Voidless.app</strong> to <strong>Applications</strong>.</li>
+          <li>Open <strong>Terminal</strong> and run: <code>xattr -cr /Applications/Voidless.app</code></li>
+          <li>Launch Voidless normally.</li>
+          <li>Alternative: right-click the app → <strong>Open</strong> → <strong>Open</strong>.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Windows — first launch</h3>
+        <ul>
+          <li>SmartScreen may show <strong>"Windows protected your PC"</strong>.</li>
+          <li>Click <strong>More info</strong>.</li>
+          <li>Click <strong>Run anyway</strong>.</li>
+          <li>Voidless launches and won't prompt again.</li>
+        </ul>
+      </article>
+    </div>
   </section>
 
   <script>
