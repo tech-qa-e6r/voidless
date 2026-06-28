@@ -345,6 +345,14 @@ code {
 }
 .release-body p { margin: 8px 0; }
 .release-body strong { color: var(--text); }
+.release-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+}
 .release-subhead {
   font-family: var(--mono);
   font-size: 13px;

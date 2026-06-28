@@ -51,9 +51,12 @@
       const root = document.getElementById("releases");
 
       const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      // Only http(s) image sources are allowed through, so escaped markup can't smuggle script.
+      const safeSrc = (u) => /^https?:\/\//i.test(u) ? u : "";
       const inline = (s) => escapeHtml(s)
         .replace(/`([^`]+)`/g, "<code>$1</code>")
         .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => '<img class="release-img" alt="' + alt + '" src="' + safeSrc(src) + '">')
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
       // Minimal Markdown: headings, bullet lists, paragraphs (enough for release notes).
@@ -68,6 +71,15 @@
           if (h) { closeList(); out += '<h4 class="release-subhead">' + inline(h[2]) + "</h4>"; continue; }
           const li = line.match(/^[-*]\s+(.*)$/);
           if (li) { if (!inList) { out += "<ul>"; inList = true; } out += "<li>" + inline(li[1]) + "</li>"; continue; }
+          // Raw <img> tags (GitHub release notes often paste them) — re-emit sanitized.
+          const img = line.match(/^<img\b[^>]*>$/i);
+          if (img) {
+            closeList();
+            const attr = (n) => { const m = line.match(new RegExp(n + '\\s*=\\s*"([^"]*)"', "i")); return m ? m[1] : ""; };
+            const src = safeSrc(attr("src"));
+            if (src) out += '<img class="release-img" alt="' + escapeHtml(attr("alt")) + '" src="' + src + '">';
+            continue;
+          }
           closeList();
           out += "<p>" + inline(line) + "</p>";
         }
