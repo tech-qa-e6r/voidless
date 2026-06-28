@@ -81,9 +81,21 @@
       };
 
       try {
-        const res = await fetch("https://api.github.com/repos/" + repo + "/releases?per_page=100");
-        if (!res.ok) throw new Error("api");
-        const releases = (await res.json()).filter((r) => !r.draft);
+        // The anonymous /releases list can drop a release that shares its created_at
+        // with another (e.g. a re-build off the same commit), so it never shows up
+        // here. /releases/latest still returns it — merge it in, dedupe by id, and
+        // sort newest-first by publish date so nothing goes missing.
+        const [listRes, latestRes] = await Promise.all([
+          fetch("https://api.github.com/repos/" + repo + "/releases?per_page=100"),
+          fetch("https://api.github.com/repos/" + repo + "/releases/latest"),
+        ]);
+        if (!listRes.ok) throw new Error("api");
+        const byId = new Map();
+        for (const r of await listRes.json()) if (!r.draft) byId.set(r.id, r);
+        if (latestRes.ok) { const l = await latestRes.json(); if (l && !l.draft) byId.set(l.id, l); }
+        const releases = [...byId.values()].sort(
+          (a, b) => new Date(b.published_at) - new Date(a.published_at)
+        );
         if (releases.length === 0) {
           root.innerHTML = '<p class="changelog-empty">No releases yet.</p>';
           return;
