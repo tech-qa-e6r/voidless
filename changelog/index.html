@@ -69,6 +69,7 @@
           if (!line.trim()) { closeList(); continue; }
           const h = line.match(/^(#{1,6})\s+(.*)$/);
           if (h) { closeList(); out += '<h4 class="release-subhead">' + inline(h[2]) + "</h4>"; continue; }
+          if (/^ *([-*_]) *(?:\1 *){2,}$/.test(line)) { closeList(); out += '<hr class="release-hr">'; continue; }
           const li = line.match(/^[-*]\s+(.*)$/);
           if (li) { if (!inList) { out += "<ul>"; inList = true; } out += "<li>" + inline(li[1]) + "</li>"; continue; }
           // Raw <img> tags (GitHub release notes often paste them) — re-emit sanitized.

@@ -344,6 +344,11 @@ code {
   color: var(--text-mute);
 }
 .release-body p { margin: 8px 0; }
+.release-hr {
+  border: none;
+  border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+  margin: 16px 0;
+}
 .release-body strong { color: var(--text); }
 .release-img {
   display: block;
