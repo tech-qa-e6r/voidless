@@ -6,6 +6,16 @@
   <title>Voidless — markdown editor</title>
   <meta name="description" content="Voidless — fast local markdown editor: live preview, templates, Google Drive sync, plugins." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <!-- Link previews (Telegram, Slack, X, iMessage…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Voidless" />
+  <meta property="og:title" content="Voidless — a Markdown editor that stays out of your way" />
+  <meta property="og:description" content="Live preview, tables and bases, built-in Excalidraw and Anki, Google Drive sync. Local files, free, macOS + Windows." />
+  <meta property="og:url" content="https://voidless.app/" />
+  <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -29,8 +39,41 @@
       <a id="dl-win" class="btn btn-primary" href="https://github.com/tech-qa-e6r/voidless/releases/latest">Download for Windows</a>
     </div>
 
-    <p class="stack">Tauri 2 + React 19 + CodeMirror 6</p>
+    <p class="stack">macOS + Windows · free · no account · works offline</p>
     <img class="screenshot" src="assets/screenshot.png" alt="Voidless editor" />
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Why ── -->
+  <section class="why">
+    <div class="why-grid">
+      <div class="why-item">
+        <h3>Live preview</h3>
+        <p>Markdown renders inline as you type — no split pane, no separate preview window.</p>
+      </div>
+      <div class="why-item">
+        <h3>Tables &amp; bases</h3>
+        <p>Interactive tables in the editor. A folder of notes rolls up into a sortable table or a kanban board.</p>
+      </div>
+      <div class="why-item">
+        <h3>Tools built in</h3>
+        <p>Excalidraw diagrams, spreadsheets and an Anki flashcard trainer live inside your notes.</p>
+      </div>
+      <div class="why-item">
+        <h3>Google Drive sync</h3>
+        <p>Your own Drive, your own account. Moves and conflicts are detected, not duplicated.</p>
+      </div>
+      <div class="why-item">
+        <h3>Just files</h3>
+        <p>Plain <code>.md</code> files in a folder on your disk. Works offline, nothing to lock you in.</p>
+      </div>
+      <div class="why-item">
+        <h3>Free</h3>
+        <p>MIT + Commons Clause. No subscription, no sign-up, no telemetry.</p>
+      </div>
+    </div>
+    <p class="why-more"><a href="/guide">See it in action →</a></p>
   </section>
 
   <hr class="divider" />
