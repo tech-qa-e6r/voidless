@@ -14,7 +14,8 @@
   <meta property="og:url" content="https://voidless.app/guide" />
   <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="stylesheet" href="../style.css" />
+  <!-- Bump ?v= whenever style.css changes: Pages/Cloudflare cache it for 10 min. -->
+  <link rel="stylesheet" href="../style.css?v=2026-08-16" />
   <style>
     .guide-list {
       max-width: 1000px;
@@ -108,15 +109,12 @@
       <a href="#wiki-links"><span class="num">03</span> Wiki-Links</a>
       <a href="#tables"><span class="num">04</span> Tables</a>
       <a href="#templates"><span class="num">05</span> Templates</a>
-      <a href="#alarms"><span class="num">06</span> Alarms</a>
-      <a href="#base-view"><span class="num">07</span> Base View</a>
-      <a href="#excalidraw"><span class="num">08</span> Excalidraw</a>
-      <a href="#anki"><span class="num">09</span> Anki</a>
-      <a href="#web-parser"><span class="num">10</span> Web Parser</a>
-      <a href="#gdrive"><span class="num">11</span> Google Drive</a>
-      <a href="#color-icon"><span class="num">12</span> Color &amp; Icon</a>
-      <a href="#report"><span class="num">13</span> Report</a>
-      <a href="#search"><span class="num">14</span> Search</a>
+      <a href="#base-view"><span class="num">06</span> Base View</a>
+      <a href="#excalidraw"><span class="num">07</span> Excalidraw</a>
+      <a href="#anki"><span class="num">08</span> Anki</a>
+      <a href="#gdrive"><span class="num">09</span> Google Drive</a>
+      <a href="#color-icon"><span class="num">10</span> Color &amp; Icon</a>
+      <a href="#search"><span class="num">11</span> Search</a>
     </nav>
 
     <article class="guide-item" id="live-preview">
@@ -154,64 +152,43 @@
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
-    <article class="guide-item" id="alarms">
-      <h3 class="guide-title"><span class="num">06</span> Alarms</h3>
-      <p class="guide-note">Put a time in a note and get an in-app reminder with a chime; click it to jump back to the line.</p>
-      <video class="guide-gif" poster="posters/006_Alarms.jpg" data-src="006_Alarms.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
-    </article>
-
     <article class="guide-item" id="base-view">
-      <h3 class="guide-title"><span class="num">07</span> Base View</h3>
+      <h3 class="guide-title"><span class="num">06</span> Base View</h3>
       <p class="guide-note">Roll a folder of notes up into a sortable table or a kanban board, built from their frontmatter.</p>
       <video class="guide-gif" poster="posters/007_Base_view.jpg" data-src="007_Base_view.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
     <article class="guide-item" id="excalidraw">
-      <h3 class="guide-title"><span class="num">08</span> Excalidraw</h3>
+      <h3 class="guide-title"><span class="num">07</span> Excalidraw</h3>
       <p class="guide-note">Draw diagrams inside a note without leaving the editor.</p>
       <video class="guide-gif" poster="posters/008_Excalidraw.jpg" data-src="008_Excalidraw.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
     <article class="guide-item" id="anki">
-      <h3 class="guide-title"><span class="num">09</span> Anki</h3>
+      <h3 class="guide-title"><span class="num">08</span> Anki</h3>
       <p class="guide-note">A built-in spaced-repetition trainer — add a card from any word, translated by DeepL.</p>
       <video class="guide-gif" poster="posters/009_Anki.jpg" data-src="009_Anki.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
-    <article class="guide-item" id="web-parser">
-      <h3 class="guide-title"><span class="num">10</span> Web Parser</h3>
-      <p class="guide-note">Give it sites and keywords; it crawls the pages and collects matching links into a table.</p>
-      <video class="guide-gif" poster="posters/010_Web_Parser.jpg" data-src="010_Web_Parser.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
-    </article>
-
     <article class="guide-item" id="gdrive">
-      <h3 class="guide-title"><span class="num">11</span> Google Drive</h3>
+      <h3 class="guide-title"><span class="num">09</span> Google Drive</h3>
       <p class="guide-note">Sync the vault through your own Drive, with move and conflict detection.</p>
       <video class="guide-gif" poster="posters/011_GDrive.jpg" data-src="011_GDrive.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
     <article class="guide-item" id="color-icon">
-      <h3 class="guide-title"><span class="num">12</span> Color &amp; Icon</h3>
+      <h3 class="guide-title"><span class="num">10</span> Color &amp; Icon</h3>
       <p class="guide-note">Colour-code files and folders with icons — the labels sync across devices.</p>
       <video class="guide-gif" poster="posters/012_Set_Color_or_Icon.jpg" data-src="012_Set_Color_or_Icon.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
     </article>
 
-    <article class="guide-item" id="report">
-      <h3 class="guide-title"><span class="num">13</span> Report</h3>
-      <p class="guide-note">One click writes a diagnostic report into the vault's <code>logs</code> folder — handy when filing a bug.</p>
-      <video class="guide-gif" poster="posters/013_Report.jpg" data-src="013_Report.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
-    </article>
-
     <article class="guide-item" id="search">
-      <h3 class="guide-title"><span class="num">14</span> Search</h3>
+      <h3 class="guide-title"><span class="num">11</span> Search</h3>
       <p class="guide-note">Full-text search across the whole vault, with results in context.</p>
       <video class="guide-gif" poster="posters/014_Search.jpg" data-src="014_Search.mp4"
              muted loop playsinline controls controlslist="nodownload" preload="none"></video>
