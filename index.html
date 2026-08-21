@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Voidless — markdown editor</title>
-  <meta name="description" content="Voidless — fast local markdown editor: live preview, templates, Google Drive sync, plugins." />
+  <meta name="description" content="Voidless — a local Markdown editor with tables, databases, diagrams, spreadsheets, flashcards and reminders that reach your phone. Plain .md files, free, macOS and Windows." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
   <!-- Link previews (Telegram, Slack, X, iMessage…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Voidless" />
-  <meta property="og:title" content="Voidless — a Markdown editor that stays out of your way" />
-  <meta property="og:description" content="Live preview, tables and bases, built-in Excalidraw and Anki, Google Drive sync. Local files, free, macOS + Windows." />
+  <meta property="og:title" content="Voidless — Markdown notes with the extras already inside" />
+  <meta property="og:description" content="Tables that roll up into databases, diagrams, spreadsheets, flashcards, and reminders that ring on your phone — all in plain .md files on your disk. Free, macOS + Windows." />
   <meta property="og:url" content="https://voidless.app/" />
   <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Bump ?v= whenever style.css changes: Pages/Cloudflare cache it for 10 min. -->
-  <link rel="stylesheet" href="style.css?v=2026-08-16" />
+  <link rel="stylesheet" href="style.css?v=2026-08-21" />
 </head>
 <body>
   <!-- ── Nav ── -->
@@ -28,19 +28,29 @@
     <nav class="nav-links">
       <a href="/changelog">Changes</a>
       <a href="/guide">Guide</a>
+      <a href="/privacy">Privacy</a>
     </nav>
   </header>
 
   <!-- ── Hero ── -->
   <section class="hero">
-    <h1>A Markdown editor that stays out of your way.</h1>
+    <h1>Markdown notes with the extras <span class="accent">already inside</span>.</h1>
+    <p class="lead">
+      Tables that roll up into databases, diagrams, spreadsheets, flashcards and reminders
+      that ring on your phone — with no plugins to hunt down and nothing to subscribe to.
+      Every note stays a plain <code>.md</code> file in a folder you own.
+    </p>
     <hr class="divider" />
     <div class="hero-actions" id="download">
       <a id="dl-mac" class="btn btn-primary" href="https://github.com/tech-qa-e6r/voidless/releases/latest">Download for macOS</a>
       <a id="dl-win" class="btn btn-primary" href="https://github.com/tech-qa-e6r/voidless/releases/latest">Download for Windows</a>
     </div>
 
-    <p class="stack">macOS + Windows · free · no account · works offline</p>
+    <p class="stack" id="release-line">macOS + Windows · free · no account · works offline</p>
+    <p class="first-run">
+      The build isn't code-signed yet, so the first launch needs one extra click —
+      <a href="#first-launch">here's how</a>.
+    </p>
     <img class="screenshot" src="assets/screenshot.png" alt="Voidless editor" />
   </section>
 
@@ -70,11 +80,40 @@
         <p>Plain <code>.md</code> files in a folder on your disk. Works offline, nothing to lock you in.</p>
       </div>
       <div class="why-item">
+        <h3>Reminders on your phone</h3>
+        <p>A reminder written in a note rings on your phone through your own Google calendar — even with the editor closed.</p>
+      </div>
+      <div class="why-item">
+        <h3>Hard to lose work</h3>
+        <p>Deletes go to a trash folder, edits from two machines are detected instead of overwritten, and conflicts open side by side to merge.</p>
+      </div>
+      <div class="why-item">
         <h3>Free</h3>
         <p>MIT + Commons Clause. No subscription, no sign-up, no telemetry.</p>
       </div>
     </div>
     <p class="why-more"><a href="/guide">See it in action →</a></p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Coming from Obsidian ── -->
+  <section class="why">
+    <h2 class="section-title">Coming from Obsidian?</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>The same files</h3>
+        <p>A vault is a folder of <code>.md</code> files with wiki-links and frontmatter. Point Voidless at an existing vault and keep using Obsidian on your phone — nothing is converted, nothing is locked.</p>
+      </article>
+      <article class="card">
+        <h3>Built in, not bolted on</h3>
+        <p>Databases over folders, drawings, spreadsheets, flashcards with spaced repetition and Drive sync ship with the editor. No plugin hunting, no sync subscription.</p>
+      </article>
+      <article class="card">
+        <h3>What you give up</h3>
+        <p>No plugin ecosystem and no mobile app of our own — the vault is plain files, so any editor opens it. Voidless is younger and moves faster; the file format never does.</p>
+      </article>
+    </div>
   </section>
 
   <hr class="divider" />
@@ -87,7 +126,7 @@
       <a class="btn btn-ghost" href="mailto:support@voidless.app">support@voidless.app</a>
     </div>
 
-    <p class="install-note">The build isn't code-signed yet — Apple/Windows signing is in progress. Until then, the OS may block the first launch. Here's how to allow it:</p>
+    <p class="install-note" id="first-launch">The build isn't code-signed yet — Apple/Windows signing is in progress. Until then, the OS may block the first launch. Here's how to allow it:</p>
     <div class="grid install-grid">
       <article class="card">
         <h3>macOS — first launch</h3>
@@ -118,11 +157,19 @@
       try {
         const res = await fetch("https://api.github.com/repos/" + repo + "/releases/latest");
         if (!res.ok) return;
-        const assets = (await res.json()).assets || [];
+        const rel = await res.json();
+        const assets = rel.assets || [];
         const url = (re) => (assets.find((a) => re.test(a.name)) || {}).browser_download_url;
         const dmg = url(/\.dmg$/i), exe = url(/-setup\.exe$/i);
         if (dmg) document.getElementById("dl-mac").href = dmg;
         if (exe) document.getElementById("dl-win").href = exe;
+        // Version and date next to the buttons: a visitor can tell at a glance the
+        // project is alive without opening the changelog.
+        if (rel.tag_name) {
+          const when = new Date(rel.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+          document.getElementById("release-line").textContent =
+            rel.tag_name + " · " + when + " · macOS 12+ and Windows 10+ · free · no account · works offline";
+        }
       } catch (e) { /* keep fallback links */ }
     })();
   </script>

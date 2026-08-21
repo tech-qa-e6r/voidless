@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voidless — privacy</title>
+  <meta name="description" content="What Voidless stores, what leaves your computer, and how to take it back." />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Voidless" />
+  <meta property="og:title" content="Voidless — privacy" />
+  <meta property="og:description" content="Your notes stay on your disk. Nothing is uploaded unless you connect a service yourself." />
+  <meta property="og:url" content="https://voidless.app/privacy" />
+  <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Bump ?v= whenever style.css changes: Pages/Cloudflare cache it for 10 min. -->
+  <link rel="stylesheet" href="../style.css?v=2026-08-21" />
+</head>
+<body>
+  <header class="nav">
+    <a class="nav-brand" href="/"><span class="dot"></span> Voidless</a>
+    <nav class="nav-links">
+      <a href="/changelog">Changes</a>
+      <a href="/guide">Guide</a>
+    </nav>
+  </header>
+
+  <main class="why" style="max-width: 760px;">
+    <h2 class="section-title" style="text-align: left;">Privacy</h2>
+    <p class="lead" style="margin: 0 0 28px; max-width: none;">
+      Voidless is a desktop app that edits files on your computer. It has no accounts,
+      no servers of ours, and no analytics. Last updated 21 August 2026.
+    </p>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Your notes</h3>
+      <p>
+        Notes are plain <code>.md</code> files in a folder you choose. They are read and
+        written locally. Nothing is sent anywhere unless you turn on one of the
+        integrations below, and each one is off until you connect it yourself.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>What we never collect</h3>
+      <p>
+        No telemetry, no usage statistics, no crash reporting, no advertising identifiers,
+        no account, no email address. We do not operate a server that your notes pass through.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Google Drive sync (optional)</h3>
+      <p>
+        If you connect Drive, files from your vault are uploaded to your own Google account
+        so your machines stay in step. Voidless asks for the <code>drive.file</code>
+        permission, which only reaches files and folders this app itself created or you
+        explicitly opened — the rest of your Drive stays invisible to it. Tokens are stored
+        on your computer. Disconnecting in Settings removes them; deleting the files is done
+        from your Drive, by you.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Reminders through Google Calendar (optional)</h3>
+      <p>
+        If you turn on reminders, Voidless creates a calendar of its own in your Google
+        account and writes one event per reminder into it, so your phone can ring while the
+        editor is closed. It asks for the <code>calendar.app.created</code> permission, which
+        reaches only the calendars this app created — never your existing ones. The event
+        carries the text of the reminder line and the note's path; turn on
+        <em>Hide reminder text</em> in Settings and it sends a neutral title instead.
+        Turning reminders off deletes the future events it created.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Translation and AI features (optional)</h3>
+      <p>
+        The flashcard translator sends the selected word or phrase to the provider whose API
+        key you entered, and nothing else. Without a key, the feature does not run.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Updates</h3>
+      <p>
+        The app checks GitHub for a newer release and downloads it when you agree. That
+        request reaches GitHub, which sees your IP address as any download would; it carries
+        nothing about you or your notes.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Diagnostic logs</h3>
+      <p>
+        Logs are written into your vault and stay there. They are never uploaded. If you send
+        one to support, you decide what to send — read it first, it is a plain text file.
+      </p>
+    </article>
+
+    <article class="card" style="margin-bottom: 16px;">
+      <h3>Taking it all back</h3>
+      <p>
+        Delete the app and your notes remain — they are your files. Disconnect Google in
+        Settings to revoke the app's access, or remove it at
+        <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.
+        There is no account of ours to delete.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Contact</h3>
+      <p>
+        Questions about any of this: <a href="mailto:support@voidless.app">support@voidless.app</a>.
+      </p>
+    </article>
+  </main>
+</body>
+</html>

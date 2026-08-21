@@ -142,6 +142,23 @@ code {
   margin: 36px auto;
 }
 
+/* Warning under the download buttons — the unsigned first launch is the single
+   biggest place people get stuck, so it cannot live at the bottom of the page. */
+.first-run {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+.first-run a { color: var(--accent-hi); }
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
 .stack {
   margin-top: 18px;
   font-family: var(--mono);
