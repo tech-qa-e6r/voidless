@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guide — Voidless</title>
-  <meta name="description" content="Voidless user guide — 14 short screencasts: live preview, tables, bases, Excalidraw, Anki, Drive sync." />
+  <meta name="description" content="Voidless user guide — every feature in 26 short steps with real screenshots." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Voidless" />
   <meta property="og:title" content="Voidless — Guide" />
-  <meta property="og:description" content="14 short screencasts: live preview, tables, bases, Excalidraw, Anki, Drive sync." />
+  <meta property="og:description" content="Every feature in 26 short steps with real screenshots." />
   <meta property="og:url" content="https://voidless.app/guide" />
   <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -23,17 +23,25 @@
       padding: 70px 28px 90px;
       display: flex;
       flex-direction: column;
-      gap: 64px;
+      gap: 56px;
     }
     .guide-list > h2 {
       font-size: 28px;
       letter-spacing: -0.01em;
       margin: 0 0 8px;
     }
+    .guide-intro {
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 720px;
+      margin: -40px 0 0;
+    }
+    .guide-intro b, .guide-note b { color: var(--text); font-weight: 600; }
     .guide-item {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       scroll-margin-top: 80px;
     }
     .guide-title {
@@ -53,15 +61,20 @@
     }
     .guide-note {
       color: var(--text-dim);
-      font-size: 14px;
-      max-width: 720px;
-      margin: -8px 0 0;
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 760px;
+      margin: 0;
     }
-    .guide-gif {
-      width: 100%;
-      max-width: 900px;
+    /* Screenshots are 2x captures shown at half their pixels; several on one line sit side by side. */
+    .guide-shots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .guide-shots img {
       height: auto;
-      aspect-ratio: 16 / 10;
       display: block;
       border: 1px solid var(--border-2);
       border-radius: 10px;
@@ -72,7 +85,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin: -32px 0 8px;
+      margin: -24px 0 8px;
     }
     .guide-toc a {
       font-family: var(--mono);
@@ -85,6 +98,9 @@
     }
     .guide-toc a:hover { border-color: var(--accent); color: var(--accent-hi); }
     .guide-toc .num { color: var(--text-mute); margin-right: 4px; }
+    @media (max-width: 640px) {
+      .guide-list { padding: 48px 16px 70px; }
+    }
   </style>
 </head>
 <body>
@@ -103,123 +119,182 @@
   <!-- ── Guide ── -->
   <main class="guide-list">
     <h2>Guide</h2>
+    <p class="guide-intro"><b>Bold</b> is a button or menu item as it reads on screen. <code>/table</code> is something to type, and → shows what you get: <code>/table</code> → a table. Keys are for Mac; on Windows use <b>Ctrl</b> for ⌘ and <b>Alt</b> for ⌥.</p>
+    <div class="guide-shots"><img src="img/guide-00-window.webp" width="900" height="562" alt="window" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
 
     <nav class="guide-toc">
-      <a href="#live-preview"><span class="num">01</span> Live Preview</a>
-      <a href="#split-drag"><span class="num">02</span> Split &amp; Drag</a>
-      <a href="#wiki-links"><span class="num">03</span> Wiki-Links</a>
-      <a href="#tables"><span class="num">04</span> Tables</a>
-      <a href="#templates"><span class="num">05</span> Templates</a>
-      <a href="#base-view"><span class="num">06</span> Base View</a>
-      <a href="#excalidraw"><span class="num">07</span> Excalidraw</a>
-      <a href="#anki"><span class="num">08</span> Anki</a>
-      <a href="#gdrive"><span class="num">09</span> Google Drive</a>
-      <a href="#color-icon"><span class="num">10</span> Color &amp; Icon</a>
-      <a href="#search"><span class="num">11</span> Search</a>
+      <a href="#formatting"><span class="num">01</span> formatting</a>
+      <a href="#highlight"><span class="num">02</span> highlight</a>
+      <a href="#slash-menu"><span class="num">03</span> slash menu</a>
+      <a href="#find"><span class="num">04</span> find</a>
+      <a href="#tasks"><span class="num">05</span> tasks</a>
+      <a href="#tables"><span class="num">06</span> tables</a>
+      <a href="#tags"><span class="num">07</span> tags</a>
+      <a href="#paste"><span class="num">08</span> paste</a>
+      <a href="#page-links"><span class="num">09</span> page links</a>
+      <a href="#block-links"><span class="num">10</span> block links</a>
+      <a href="#web-links"><span class="num">11</span> web links</a>
+      <a href="#alarms"><span class="num">12</span> alarms</a>
+      <a href="#templates"><span class="num">13</span> templates</a>
+      <a href="#fields"><span class="num">14</span> fields</a>
+      <a href="#kanban"><span class="num">15</span> kanban</a>
+      <a href="#cards"><span class="num">16</span> cards</a>
+      <a href="#habits"><span class="num">17</span> habits</a>
+      <a href="#drawings"><span class="num">18</span> drawings</a>
+      <a href="#ai"><span class="num">19</span> AI</a>
+      <a href="#folding"><span class="num">20</span> folding</a>
+      <a href="#lines"><span class="num">21</span> lines</a>
+      <a href="#tabs"><span class="num">22</span> tabs</a>
+      <a href="#colours"><span class="num">23</span> colours</a>
+      <a href="#sync"><span class="num">24</span> sync</a>
+      <a href="#settings"><span class="num">25</span> settings</a>
+      <a href="#updates"><span class="num">26</span> updates</a>
     </nav>
 
-    <article class="guide-item" id="live-preview">
-      <h3 class="guide-title"><span class="num">01</span> Live Preview</h3>
-      <p class="guide-note">Markdown renders right in the text — move the caret into a line to reveal the raw syntax.</p>
-      <video class="guide-gif" poster="posters/001_Live_preview.jpg" data-src="001_Live_preview.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="formatting">
+      <h3 class="guide-title"><span class="num">01</span> Live formatting + ⌘B / ⌘I</h3>
+      <p class="guide-note">Type <code><b>bold</b>, *italic*, ~~struck~~</code> → the markup turns into formatting as you type. Select a word → ⌘B makes it bold, ⌘I italic; press again to undo. Put the caret inside a formatted word → the markup shows again, ready to edit.</p>
+      <div class="guide-shots"><img src="img/guide-03-live-raw.webp" width="820" height="47" alt="live raw" loading="lazy" decoding="async" style="max-width:min(820px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="split-drag">
-      <h3 class="guide-title"><span class="num">02</span> Split &amp; Drag</h3>
-      <p class="guide-note">Drag a tab to any edge to split the pane; drop it in the centre to just move it.</p>
-      <video class="guide-gif" poster="posters/002_Split_%26_Drag.jpg" data-src="002_Split_%26_Drag.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="highlight">
+      <h3 class="guide-title"><span class="num">02</span> Highlight + wrap a selection</h3>
+      <p class="guide-note">Select a word and press <code>=</code> twice → the word is highlighted. A quote or a backtick typed over a selection wraps it too, instead of replacing it.</p>
     </article>
-
-    <article class="guide-item" id="wiki-links">
-      <h3 class="guide-title"><span class="num">03</span> Wiki-Links</h3>
-      <p class="guide-note"><code>[[note]]</code> links with autocomplete over the vault; the brackets stay hidden until you edit.</p>
-      <video class="guide-gif" poster="posters/003_Wiki-Links.jpg" data-src="003_Wiki-Links.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="slash-menu">
+      <h3 class="guide-title"><span class="num">03</span> The / menu + ⌘P palette</h3>
+      <p class="guide-note">Type <code>/</code> on an empty line → everything you can insert. Keep typing to narrow it: <code>/tab</code> → <b>Insert Table</b> → Enter. ⌘P opens the same list plus the app's commands. Try <code>/date</code> and <code>/time</code> → today's date and the time.</p>
+      <div class="guide-shots"><img src="img/guide-04-slash-menu.webp" width="340" height="179" alt="slash menu" loading="lazy" decoding="async" style="max-width:min(340px,100%)" /><img src="img/guide-04-slash-filter.webp" width="324" height="85" alt="slash filter" loading="lazy" decoding="async" style="max-width:min(324px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-04-palette.webp" width="580" height="405" alt="palette" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
     </article>
-
+    <article class="guide-item" id="find">
+      <h3 class="guide-title"><span class="num">04</span> Find + replace</h3>
+      <p class="guide-note">⌘F → find, with a match count; Enter goes to the next one. ⇧⌘F → replace too: <b>Replace</b> — the current match, <b>All</b> — every one at once; a single ⌘Z takes the whole file back.</p>
+    </article>
+    <article class="guide-item" id="tasks">
+      <h3 class="guide-title"><span class="num">05</span> Tasks + progress</h3>
+      <p class="guide-note"><code>/checkbox</code> → a task. Add a couple more under it and indent them with Tab → the top one gets a bar showing how much is done. Tick one → it sinks below the open ones. Several plain lines at once: select them → ⌘P → <b>Insert Checkbox</b>.</p>
+      <div class="guide-shots"><img src="img/guide-05-tasks.webp" width="900" height="162" alt="tasks" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
     <article class="guide-item" id="tables">
-      <h3 class="guide-title"><span class="num">04</span> Tables</h3>
-      <p class="guide-note">Markdown tables become editable tables in place, with per-column option chips.</p>
-      <video class="guide-gif" poster="posters/004_Voidless_Tables.jpg" data-src="004_Voidless_Tables.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+      <h3 class="guide-title"><span class="num">06</span> Table + cell menu</h3>
+      <p class="guide-note"><code>/table</code> → a table with the caret in its first cell; the arrow keys go into the table from the text and back out. Right-click a cell → rows and columns around it, delete, a link to a note right in the cell, <b>Column settings…</b>.</p>
+      <div class="guide-shots"><img src="img/guide-06-new-table.webp" width="361" height="151" alt="new table" loading="lazy" decoding="async" style="max-width:min(361px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-06-cell-menu.webp" width="543" height="385" alt="cell menu" loading="lazy" decoding="async" style="max-width:min(543px,100%)" /></div>
     </article>
-
+    <article class="guide-item" id="tags">
+      <h3 class="guide-title"><span class="num">07</span> Coloured tags + column sort</h3>
+      <p class="guide-note">Right-click a column header → the column window. Add options in <b>Options</b> — say <code>Done</code>, <code>In progress</code>, <code>Planned</code> → <b>Save</b> → cells with those values become coloured tags. In the same window: <b>↑ Ascending</b> / <b>↓ Descending</b> (dates and numbers by value), <b>Fill the whole column</b> and the <b>Checkboxes</b> switch.</p>
+      <div class="guide-shots"><img src="img/guide-06-col-window.webp" width="400" height="529" alt="col window" loading="lazy" decoding="async" style="max-width:min(400px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="paste">
+      <h3 class="guide-title"><span class="num">08</span> Paste from Excel + move columns</h3>
+      <p class="guide-note">Copy a range in Excel or Google Sheets, click a cell → ⌘V → the range spreads over the cells. Grab the thin strip above a column header and drag sideways → an amber line shows where it lands. Rows move the same way, by the handle on the left.</p>
+      <div class="guide-shots"><img src="img/guide-06-col-drag-1.webp" width="591" height="299" alt="col drag 1" loading="lazy" decoding="async" style="max-width:min(591px,100%)" /><img src="img/guide-06-col-drag-2.webp" width="591" height="299" alt="col drag 2" loading="lazy" decoding="async" style="max-width:min(591px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="page-links">
+      <h3 class="guide-title"><span class="num">09</span> Link to a note + split</h3>
+      <p class="guide-note"><code>/</code> → <b>Link to page</b> → pick a note → a link button appears at the caret. A click opens the note, ⌘-click in a new tab, ⇧⌘-click beside it in a split. The pencil on the button points it at another note. The file keeps a plain <code>[[note name]]</code>, as in Obsidian.</p>
+      <div class="guide-shots"><img src="img/guide-07-page-picker.webp" width="580" height="430" alt="page picker" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-07-page-button.webp" width="580" height="48" alt="page button" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-14-tab-drag-2.webp" width="900" height="299" alt="tab drag 2" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="block-links">
+      <h3 class="guide-title"><span class="num">10</span> Link to a spot + highlight</h3>
+      <p class="guide-note">Select a word → right-click → <b>Link to block…</b> → pick a paragraph or a heading (this note's first, type to search every note) → the word becomes a link with an arrow: ↑ / ↓ — a spot in this note, → — in another one. A click scrolls there and blinks it yellow twice; another note opens in a new tab. The other way round: select some words → right-click → <b>Copy link to these words</b> → paste it anywhere → a click lights up exactly those words. Hover a paragraph that links point to → a faint 🔗 shows where they come from.</p>
+    </article>
+    <article class="guide-item" id="web-links">
+      <h3 class="guide-title"><span class="num">11</span> Link on a word + picture</h3>
+      <p class="guide-note">Select a word and paste a web address → the word becomes a link with ↗; right-click it → edit, unlink, copy. Paste a screenshot with ⌘V → it's saved to the <code>_files</code> folder and shown as a picture; drag the amber square in its corner → it resizes.</p>
+      <div class="guide-shots"><img src="img/guide-07-link-menu.webp" width="900" height="142" alt="link menu" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-07-image.webp" width="444" height="260" alt="image" loading="lazy" decoding="async" style="max-width:min(444px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="alarms">
+      <h3 class="guide-title"><span class="num">12</span> Alarm + phone</h3>
+      <p class="guide-note"><code>/alarm</code> → <b>Save</b> → an <b>ALARM</b> chip appears in the line; ⚙ on the chip opens it again. At the set time a banner pops up over the editor: <b>Open</b> — go to the line, <b>Snooze 10 min</b> — later. Settings → Editor → <b>Reminders on your phone</b> → <b>Connect</b> → alarms go to a Google calendar of their own and ring on your phone, even with Voidless closed.</p>
+      <div class="guide-shots"><img src="img/guide-08-alarm-window.webp" width="400" height="338" alt="alarm window" loading="lazy" decoding="async" style="max-width:min(400px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-08-banner.webp" width="900" height="106" alt="banner" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-08-phone.webp" width="900" height="112" alt="phone" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
     <article class="guide-item" id="templates">
-      <h3 class="guide-title"><span class="num">05</span> Templates</h3>
-      <p class="guide-note">Reusable note templates with variables like <code>{{date}}</code> — auto-applied per folder.</p>
-      <video class="guide-gif" poster="posters/005_Templates.jpg" data-src="005_Templates.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+      <h3 class="guide-title"><span class="num">13</span> Note template + variables</h3>
+      <p class="guide-note">Put a note <code>Meeting</code> with the text <code># Meeting {{date}}</code> in a <code>Templates</code> folder. Settings → Editor → <b>Templates folder</b> → pick that folder. In any note press <b>F1</b> → <b>Meeting</b> → the template goes in and <code>{{date}}</code> becomes today's date. There's also <code>{{time}}</code>, <code>{{dateRU}}</code> and <code>{{week}}</code>; with <b>Folder templates</b> a template applies to a folder's new notes by itself.</p>
+      <div class="guide-shots"><img src="img/guide-09-f1.webp" width="580" height="140" alt="f1" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="base-view">
-      <h3 class="guide-title"><span class="num">06</span> Base View</h3>
-      <p class="guide-note">Roll a folder of notes up into a sortable table or a kanban board, built from their frontmatter.</p>
-      <video class="guide-gif" poster="posters/007_Base_view.jpg" data-src="007_Base_view.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="fields">
+      <h3 class="guide-title"><span class="num">14</span> Folder fields + fields panel</h3>
+      <p class="guide-note">At the foot of the sidebar → <b>Templates</b> → <b>+ New template</b> → folder <code>Tasks</code>, field <code>status</code> with the value <code>[todo, doing, done]</code> → <b>Done</b>. A new note in <code>Tasks</code> gets these fields at once — a panel at the top of the note shows them; a click on <b>doing</b> changes the status. <b>Update Metadata</b> adds the fields to the folder's older notes too.</p>
+      <div class="guide-shots"><img src="img/guide-09-templates-window.webp" width="900" height="626" alt="templates window" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-09-fields-panel.webp" width="900" height="94" alt="fields panel" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="excalidraw">
-      <h3 class="guide-title"><span class="num">07</span> Excalidraw</h3>
-      <p class="guide-note">Draw diagrams inside a note without leaving the editor.</p>
-      <video class="guide-gif" poster="posters/008_Excalidraw.jpg" data-src="008_Excalidraw.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="kanban">
+      <h3 class="guide-title"><span class="num">15</span> Kanban + drag and drop</h3>
+      <p class="guide-note">Right-click <code>Tasks</code> → <b>New kanban</b> → every status from the template becomes a column. Drag a card to another column → the status in the note changes. <b>+ New card</b> under a column makes a note with that status.</p>
+      <div class="guide-shots"><img src="img/guide-10-board.webp" width="900" height="232" alt="board" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-10-card-drag-1.webp" width="900" height="274" alt="card drag 1" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-10-card-drag-2.webp" width="900" height="274" alt="card drag 2" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="anki">
-      <h3 class="guide-title"><span class="num">08</span> Anki</h3>
-      <p class="guide-note">A built-in spaced-repetition trainer — add a card from any word, translated by DeepL.</p>
-      <video class="guide-gif" poster="posters/009_Anki.jpg" data-src="009_Anki.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="cards">
+      <h3 class="guide-title"><span class="num">16</span> Card beside the board + table view</h3>
+      <p class="guide-note">Click a card → it opens beside the board, ready to write in; Esc closes it. From the keyboard: arrows move between cards, Space shows or hides a card, ⌥← / ⌥→ moves it to the next column. Right-click a card → move, rename, delete. <b>Table</b> on the board's bar → notes as rows; ▾ in a column header fills that field for all of them, <b>Filter…</b> and <b>Folders</b> narrow the list.</p>
+      <div class="guide-shots"><img src="img/guide-10-card-open.webp" width="900" height="274" alt="card open" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-10-card-menu.webp" width="294" height="317" alt="card menu" loading="lazy" decoding="async" style="max-width:min(294px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-10-table-view.webp" width="900" height="210" alt="table view" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="gdrive">
-      <h3 class="guide-title"><span class="num">09</span> Google Drive</h3>
-      <p class="guide-note">Sync the vault through your own Drive, with move and conflict detection.</p>
-      <video class="guide-gif" poster="posters/011_GDrive.jpg" data-src="011_GDrive.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="habits">
+      <h3 class="guide-title"><span class="num">17</span> Habits + a year at a glance</h3>
+      <p class="guide-note">At the foot of the sidebar → <b>Habits</b> → <b>+ new habit</b> → <code>Walk</code> → click the days you did it. The ring on the left shows the month at a glance; <b>Year</b> gives a percentage for every month.</p>
+      <div class="guide-shots"><img src="img/guide-11-habits.webp" width="900" height="326" alt="habits" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="color-icon">
-      <h3 class="guide-title"><span class="num">10</span> Color &amp; Icon</h3>
-      <p class="guide-note">Colour-code files and folders with icons — the labels sync across devices.</p>
-      <video class="guide-gif" poster="posters/012_Set_Color_or_Icon.jpg" data-src="012_Set_Color_or_Icon.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="drawings">
+      <h3 class="guide-title"><span class="num">18</span> Drawing + spreadsheet</h3>
+      <p class="guide-note"><code>/draw</code> → an Excalidraw board right in the note: shapes, arrows, text. <code>/sheet</code> → a spreadsheet with formulas such as <code>=SUM(B1:B3)</code>. Both are saved inside the note itself.</p>
+      <div class="guide-shots"><img src="img/guide-12-excalidraw.webp" width="900" height="460" alt="excalidraw" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-12-univer.webp" width="900" height="265" alt="univer" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
-
-    <article class="guide-item" id="search">
-      <h3 class="guide-title"><span class="num">11</span> Search</h3>
-      <p class="guide-note">Full-text search across the whole vault, with results in context.</p>
-      <video class="guide-gif" poster="posters/014_Search.jpg" data-src="014_Search.mp4"
-             muted loop playsinline controls controlslist="nodownload" preload="none"></video>
+    <article class="guide-item" id="ai">
+      <h3 class="guide-title"><span class="num">19</span> AI: edit + ask your notes</h3>
+      <p class="guide-note">It needs a key: Settings → <b>Plugins</b> → <b>Claude API key</b>. Select a paragraph → right-click → <b>✨ AI Improves &amp; Research</b> → tick <b>Improve</b> and <b>Fix grammar</b> → <b>Submit</b> → <b>Insert below</b>, or <b>Show diff…</b> → tick what you want → <b>Apply to note</b>. The AI itself never deletes anything. The <b>Ask your notes</b> tab → <code>What did I plan for October?</code> → <b>Ask</b>: the AI reads your notes and answers with links to them; <b>Save as note</b> keeps the answer.</p>
+      <div class="guide-shots"><img src="img/guide-13-ai-panel.webp" width="420" height="800" alt="ai panel" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /><img src="img/guide-13-ai-answer.webp" width="420" height="800" alt="ai answer" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-13-ai-diff.webp" width="720" height="273" alt="ai diff" loading="lazy" decoding="async" style="max-width:min(720px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-13-ai-ask.webp" width="420" height="800" alt="ai ask" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="folding">
+      <h3 class="guide-title"><span class="num">20</span> Folding + a note's memory</h3>
+      <p class="guide-note">Click a heading's line number → the section folds (from the keyboard: ⌘⌥[ / ⌘⌥]). Put the caret in the middle of a note, open another and come back → the folds and the caret are where you left them — even after a restart.</p>
+      <div class="guide-shots"><img src="img/guide-03-fold.webp" width="900" height="176" alt="fold" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="lines">
+      <h3 class="guide-title"><span class="num">21</span> Lines + code block</h3>
+      <p class="guide-note">⌥↑ / ⌥↓ move a line, and a folded section as a whole; ⇧⌥↑ / ⇧⌥↓ copy it. Three backticks → a code block; hover it → <b>Copy</b> in the corner. Markup doesn't apply inside code: <code>==</code> and <code>~~</code> stay as typed.</p>
+      <div class="guide-shots"><img src="img/guide-03-code-block.webp" width="900" height="77" alt="code block" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="tabs">
+      <h3 class="guide-title"><span class="num">22</span> Tabs + per-pane history</h3>
+      <p class="guide-note">Drag a tab along the bar → it changes places; onto another pane's bar → it moves there. The middle mouse button closes a tab and opens a sidebar file in a new one. Right-click a tab → <b>Pin tab</b> → a pin instead of the ×. ⌘⌥← / ⌘⌥→ (or the mouse's side buttons) go back and forward; every pane has its own history.</p>
+      <div class="guide-shots"><img src="img/guide-14-pinned.webp" width="432" height="36" alt="pinned" loading="lazy" decoding="async" style="max-width:min(432px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="colours">
+      <h3 class="guide-title"><span class="num">23</span> Colour + icon in the sidebar</h3>
+      <p class="guide-note">Right-click a folder or a note → <b>Set color</b> and <b>Set icon</b> → a colour and an emoji by its name. They're stored in the vault itself and move with it to another computer.</p>
+      <div class="guide-shots"><img src="img/guide-02-color-icon.webp" width="298" height="402" alt="color icon" loading="lazy" decoding="async" style="max-width:min(298px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="sync">
+      <h3 class="guide-title"><span class="num">24</span> Sync + conflicts</h3>
+      <p class="guide-note">At the foot of the sidebar → <b>Sync</b> → <b>Connect Google Drive</b> → <b>Sync Now</b>; from then on it syncs at launch and every 5 minutes. Edited one note on two computers? Both versions are kept, and the compare window lets you choose: <b>Keep original</b>, <b>Keep conflict copy</b> or <b>Decide later</b>.</p>
+      <div class="guide-shots"><img src="img/guide-16-sync.webp" width="400" height="279" alt="sync" loading="lazy" decoding="async" style="max-width:min(400px,100%)" /></div>
+      <div class="guide-shots"><img src="img/guide-16-conflict.webp" width="900" height="314" alt="conflict" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
+    <article class="guide-item" id="settings">
+      <h3 class="guide-title"><span class="num">25</span> Language + look</h3>
+      <p class="guide-note">Settings → Editor → <b>Language</b>: <b>Auto (system)</b>, English or Русский; the window reloads. The same tab has font size, interface zoom and line numbers.</p>
+    </article>
+    <article class="guide-item" id="updates">
+      <h3 class="guide-title"><span class="num">26</span> Updates</h3>
+      <p class="guide-note">At launch Voidless looks for a new version — if there is one, the <b>What's new</b> screen opens: <b>Install now</b> installs it, <b>Skip this release</b> skips it. Open the screen by hand: ⌘P → <b>What's new</b>.</p>
     </article>
   </main>
 
   <footer class="footer">
   </footer>
-
-  <script>
-    // Videos stay unloaded until they scroll into view (the guide is ~46 MB of clips),
-    // then autoplay while visible and pause once they leave.
-    (function () {
-      const videos = document.querySelectorAll("video[data-src]");
-      if (!("IntersectionObserver" in window)) {
-        videos.forEach((v) => { v.src = v.dataset.src; });
-        return;
-      }
-      const io = new IntersectionObserver((entries) => {
-        for (const { target: v, isIntersecting } of entries) {
-          if (isIntersecting) {
-            if (!v.src) v.src = v.dataset.src;
-            v.play().catch(() => {});
-          } else if (!v.paused) {
-            v.pause();
-          }
-        }
-      }, { rootMargin: "300px 0px", threshold: 0.2 });
-      videos.forEach((v) => io.observe(v));
-    })();
-  </script>
 </body>
 </html>
