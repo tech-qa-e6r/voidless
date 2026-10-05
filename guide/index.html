@@ -153,26 +153,26 @@
 
     <article class="guide-item" id="formatting">
       <h3 class="guide-title"><span class="num">01</span> Live formatting + ⌘B / ⌘I</h3>
-      <p class="guide-note">Type <code><b>bold</b>, *italic*, ~~struck~~</code> → the markup turns into formatting as you type. Select a word → ⌘B makes it bold, ⌘I italic; press again to undo. Put the caret inside a formatted word → the markup shows again, ready to edit.</p>
+      <p class="guide-note">Type <code><b>bold</b>, *italic*, ~~struck~~</code> → the markup turns into formatting as you type. Select a word → ⌘B makes it bold, ⌘I italic; press again to undo. Put the caret inside a formatted word → the markup shows again, ready to edit. <code>&gt; </code> at the start of a line makes a quote: Enter on an empty quote line leaves it, ⇧Enter adds an empty line inside it.</p>
       <div class="guide-shots"><img src="img/guide-03-live-raw.webp" width="820" height="47" alt="live raw" loading="lazy" decoding="async" style="max-width:min(820px,100%)" /></div>
     </article>
     <article class="guide-item" id="highlight">
       <h3 class="guide-title"><span class="num">02</span> Highlight + wrap a selection</h3>
-      <p class="guide-note">Select a word and press <code>=</code> twice → the word is highlighted. A quote or a backtick typed over a selection wraps it too, instead of replacing it.</p>
+      <p class="guide-note">Select a word and press <code>=</code> twice → the word is highlighted. A quote, a backtick, <code>*</code>, <code>_</code> or <code>~</code> typed over a selection wraps it too, instead of replacing it: <code>~</code> twice strikes the word through.</p>
     </article>
     <article class="guide-item" id="slash-menu">
       <h3 class="guide-title"><span class="num">03</span> The / menu + ⌘P palette</h3>
-      <p class="guide-note">Type <code>/</code> on an empty line → everything you can insert. Keep typing to narrow it: <code>/tab</code> → <b>Insert Table</b> → Enter. ⌘P opens the same list plus the app's commands. Try <code>/date</code> and <code>/time</code> → today's date and the time.</p>
+      <p class="guide-note">Type <code>/</code> on an empty line → everything you can insert. Keep typing to narrow it: <code>/tab</code> → <b>Insert Table</b> → Enter. ⌘P opens the same list plus the app's commands. Try <code>/date</code> and <code>/time</code> → today's date and the time. ⌘O opens a note by name — a few letters of it are enough, the notes opened last come first; a name no note has → Enter creates it.</p>
       <div class="guide-shots"><img src="img/guide-04-slash-menu.webp" width="340" height="179" alt="slash menu" loading="lazy" decoding="async" style="max-width:min(340px,100%)" /><img src="img/guide-04-slash-filter.webp" width="324" height="85" alt="slash filter" loading="lazy" decoding="async" style="max-width:min(324px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-04-palette.webp" width="580" height="405" alt="palette" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
     </article>
     <article class="guide-item" id="find">
       <h3 class="guide-title"><span class="num">04</span> Find + replace</h3>
-      <p class="guide-note">⌘F → find, with a match count; Enter goes to the next one. ⇧⌘F → replace too: <b>Replace</b> — the current match, <b>All</b> — every one at once; a single ⌘Z takes the whole file back.</p>
+      <p class="guide-note">⌘F → find, with a match count; Enter goes to the next one. With words selected, ⌘F looks for them; ↑ / ↓ beside the field, or ⌘G / ⇧⌘G even with the bar closed, step through the matches. ⇧⌘F → replace too: <b>Replace</b> — the current match, <b>All</b> — every one at once; a single ⌘Z takes the whole file back.</p>
     </article>
     <article class="guide-item" id="tasks">
       <h3 class="guide-title"><span class="num">05</span> Tasks + progress</h3>
-      <p class="guide-note"><code>/checkbox</code> → a task. Add a couple more under it and indent them with Tab → the top one gets a bar showing how much is done. Tick one → it sinks below the open ones. Several plain lines at once: select them → ⌘P → <b>Insert Checkbox</b>.</p>
+      <p class="guide-note"><code>/checkbox</code> → a task. Add a couple more under it and indent them with Tab → the top one gets a bar showing how much is done. Tick one → it sinks below the open ones. ⌘L does the same from the keyboard: it ticks the task on the caret's line, or makes a plain line a task; on several selected lines — all at once. Several plain lines at once: select them → ⌘P → <b>Insert Checkbox</b>.</p>
       <div class="guide-shots"><img src="img/guide-05-tasks.webp" width="900" height="162" alt="tasks" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
     <article class="guide-item" id="tables">
@@ -193,7 +193,7 @@
     </article>
     <article class="guide-item" id="page-links">
       <h3 class="guide-title"><span class="num">09</span> Link to a note + split</h3>
-      <p class="guide-note"><code>/</code> → <b>Link to page</b> → pick a note → a link button appears at the caret. A click opens the note, ⌘-click in a new tab, ⇧⌘-click beside it in a split. The pencil on the button points it at another note. The file keeps a plain <code>[[note name]]</code>, as in Obsidian. Or type <code>[[</code> → the notes narrow as you type → Enter. A link to a note that isn't there yet is faded — a click creates it. Rename or move the note → every link to it follows.</p>
+      <p class="guide-note"><code>/</code> → <b>Link to page</b> → pick a note → a link button appears at the caret. A click opens the note, ⌘-click in a new tab, ⇧⌘-click beside it in a split. The pencil on the button points it at another note. The file keeps a plain <code>[[note name]]</code>, as in Obsidian. Or type <code>[[</code> → the notes narrow as you type → Enter. A name no note has yet → Enter closes the link anyway: a link to a note that isn't there yet is faded — a click creates it. Rename or move the note → every link to it follows. Drag a note from the sidebar into the text → a link to it appears where you drop it (a picture — embedded).</p>
       <div class="guide-shots"><img src="img/guide-07-page-picker.webp" width="580" height="430" alt="page picker" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-07-page-button.webp" width="580" height="48" alt="page button" loading="lazy" decoding="async" style="max-width:min(580px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-14-tab-drag-2.webp" width="900" height="299" alt="tab drag 2" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
@@ -204,7 +204,7 @@
     </article>
     <article class="guide-item" id="web-links">
       <h3 class="guide-title"><span class="num">11</span> Link on a word + picture</h3>
-      <p class="guide-note">Select a word and paste a web address → the word becomes a link with ↗; right-click it → edit, unlink, copy. Paste a screenshot with ⌘V → it's saved to the <code>_files</code> folder and shown as a picture; drag the amber square in its corner → it resizes.</p>
+      <p class="guide-note">Select a word and paste a web address → the word becomes a link with ↗; or press ⌘K and type the address; right-click it → edit, unlink, copy. Paste a screenshot with ⌘V → it's saved to the <code>_files</code> folder and shown as a picture; drag the amber square in its corner → it resizes. Copy text from a web page, Google Docs or a chat and paste it → its links, bold, lists, headings and tables come along; ⌘Z right after → the same text, plain.</p>
       <div class="guide-shots"><img src="img/guide-07-link-menu.webp" width="900" height="142" alt="link menu" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-07-image.webp" width="444" height="260" alt="image" loading="lazy" decoding="async" style="max-width:min(444px,100%)" /></div>
     </article>
@@ -265,17 +265,17 @@
     </article>
     <article class="guide-item" id="lines">
       <h3 class="guide-title"><span class="num">21</span> Lines + code block</h3>
-      <p class="guide-note">⌥↑ / ⌥↓ move a line, and a folded section as a whole; ⇧⌥↑ / ⇧⌥↓ copy it. Three backticks → a code block; hover it → <b>Copy</b> in the corner. Markup doesn't apply inside code: <code>==</code> and <code>~~</code> stay as typed.</p>
+      <p class="guide-note">⌥↑ / ⌥↓ move a line — a list item together with everything nested under it, a folded section as a whole; ⇧⌥↑ / ⇧⌥↓ copy it. Three backticks → a code block; Enter closes it by itself; hover it → <b>Copy</b> in the corner. Markup doesn't apply inside code: <code>==</code> and <code>~~</code> stay as typed.</p>
       <div class="guide-shots"><img src="img/guide-03-code-block.webp" width="900" height="77" alt="code block" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
     <article class="guide-item" id="tabs">
       <h3 class="guide-title"><span class="num">22</span> Tabs + per-pane history</h3>
-      <p class="guide-note">Drag a tab along the bar → it changes places; onto another pane's bar → it moves there. The middle mouse button closes a tab and opens a sidebar file in a new one. Right-click a tab → <b>Pin tab</b> → a pin instead of the ×. ⌘⌥← / ⌘⌥→ (or the mouse's side buttons) go back and forward; every pane has its own history.</p>
+      <p class="guide-note">Drag a tab along the bar → it changes places; onto another pane's bar → it moves there. The middle mouse button closes a tab and opens a sidebar file in a new one. Right-click a tab → <b>Pin tab</b> → a pin instead of the ×. ⌘⌥← / ⌘⌥→ (or the mouse's side buttons) go back and forward; every pane has its own history. ⌃Tab / ⌃⇧Tab go to the next / previous tab, ⌘1…⌘8 to that tab, ⌘9 to the last.</p>
       <div class="guide-shots"><img src="img/guide-14-pinned.webp" width="432" height="36" alt="pinned" loading="lazy" decoding="async" style="max-width:min(432px,100%)" /></div>
     </article>
     <article class="guide-item" id="colours">
       <h3 class="guide-title"><span class="num">23</span> Colour + icon in the sidebar</h3>
-      <p class="guide-note">Right-click a folder or a note → <b>Set color</b> and <b>Set icon</b> → a colour and an emoji by its name. They're stored in the vault itself and move with it to another computer.</p>
+      <p class="guide-note">Right-click a folder or a note → <b>Set color</b> and <b>Set icon</b> → a colour and an emoji by its name. They're stored in the vault itself and move with it to another computer. The same menu has <b>Copy link</b>, <b>Show in Finder</b> and <b>Duplicate</b>; <b>Delete</b> moves it to the Trash, and <b>Undo</b> on the toast brings it back.</p>
       <div class="guide-shots"><img src="img/guide-02-color-icon.webp" width="298" height="402" alt="color icon" loading="lazy" decoding="async" style="max-width:min(298px,100%)" /></div>
     </article>
     <article class="guide-item" id="sync">
@@ -286,7 +286,7 @@
     </article>
     <article class="guide-item" id="settings">
       <h3 class="guide-title"><span class="num">25</span> Language + look</h3>
-      <p class="guide-note">Settings → Editor → <b>Language</b>: <b>Auto (system)</b>, English or Русский; the window reloads. The same tab has font size, interface zoom and line numbers.</p>
+      <p class="guide-note">Settings → Editor → <b>Language</b>: <b>Auto (system)</b>, English or Русский; the window reloads. The same tab has font size, interface zoom and line numbers. <b>Check spelling</b> underlines misspelled words, <b>Readable line length</b> keeps lines as long as you set and the text in the middle; the status bar counts words.</p>
     </article>
     <article class="guide-item" id="updates">
       <h3 class="guide-title"><span class="num">26</span> Updates</h3>
