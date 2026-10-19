@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guide — Voidless</title>
-  <meta name="description" content="Voidless user guide — what other editors don't have, in 12 short steps with real screenshots." />
+  <meta name="description" content="Voidless user guide — what other editors don't have, in 13 short steps with real screenshots." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Voidless" />
   <meta property="og:title" content="Voidless — Guide" />
-  <meta property="og:description" content="What other editors don't have, in 12 short steps with real screenshots." />
+  <meta property="og:description" content="What other editors don't have, in 13 short steps with real screenshots." />
   <meta property="og:url" content="https://voidless.app/guide" />
   <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -130,11 +130,12 @@
       <a href="#fields"><span class="num">05</span> fields</a>
       <a href="#kanban"><span class="num">06</span> kanban</a>
       <a href="#cards"><span class="num">07</span> cards</a>
-      <a href="#habits"><span class="num">08</span> habits</a>
-      <a href="#drawings"><span class="num">09</span> drawings</a>
-      <a href="#ai"><span class="num">10</span> AI</a>
-      <a href="#colours"><span class="num">11</span> colours</a>
-      <a href="#sync"><span class="num">12</span> sync</a>
+      <a href="#node"><span class="num">08</span> node</a>
+      <a href="#habits"><span class="num">09</span> habits</a>
+      <a href="#drawings"><span class="num">10</span> drawings</a>
+      <a href="#ai"><span class="num">11</span> AI</a>
+      <a href="#colours"><span class="num">12</span> colours</a>
+      <a href="#sync"><span class="num">13</span> sync</a>
     </nav>
 
     <article class="guide-item" id="tasks">
@@ -178,31 +179,36 @@
       <div class="guide-shots"><img src="img/guide-10-card-menu.webp" width="294" height="317" alt="card menu" loading="lazy" decoding="async" style="max-width:min(294px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-10-table-view.webp" width="900" height="210" alt="table view" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
+    <article class="guide-item" id="node">
+      <h3 class="guide-title"><span class="num">08</span> Node + automations</h3>
+      <p class="guide-note">At the foot of the sidebar → <b>Node</b> → a canvas. Drag blocks from the left and link them: where notes come from (<b>On save</b>, <b>Schedule</b>, <b>New note</b>, <b>Command</b> in ⌘P), filters that split them into yes and no (<b>YAML field</b>, <b>Tag</b>, <b>Date</b>, <b>Tasks</b>…), then what happens to them (<b>Move</b>, <b>Set field</b>, <b>Rename</b>, <b>Add a line</b>, <b>Reminder</b>, <b>List</b>). The numbers on the ports show what <b>Run now</b> would touch; <b>Report</b> lists it note by note and keeps the past runs with <b>Undo</b>. Not sure where to start? <b>Examples</b>.</p>
+      <div class="guide-shots"><img src="img/guide-17-node.webp" width="900" height="614" alt="node canvas" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
+    </article>
     <article class="guide-item" id="habits">
-      <h3 class="guide-title"><span class="num">08</span> Habits + a year at a glance</h3>
+      <h3 class="guide-title"><span class="num">09</span> Habits + a year at a glance</h3>
       <p class="guide-note">At the foot of the sidebar → <b>Habits</b> → <b>+ new habit</b> → <code>Walk</code> → click the days you did it. The ring on the left shows the month at a glance; <b>Year</b> gives a percentage for every month.</p>
       <div class="guide-shots"><img src="img/guide-11-habits.webp" width="900" height="326" alt="habits" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
     <article class="guide-item" id="drawings">
-      <h3 class="guide-title"><span class="num">09</span> Drawing + spreadsheet</h3>
+      <h3 class="guide-title"><span class="num">10</span> Drawing + spreadsheet</h3>
       <p class="guide-note"><code>/draw</code> → an Excalidraw board right in the note: shapes, arrows, text. <code>/sheet</code> → a spreadsheet with formulas such as <code>=SUM(B1:B3)</code>. Both are saved inside the note itself.</p>
       <div class="guide-shots"><img src="img/guide-12-excalidraw.webp" width="900" height="460" alt="excalidraw" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-12-univer.webp" width="900" height="265" alt="univer" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
     </article>
     <article class="guide-item" id="ai">
-      <h3 class="guide-title"><span class="num">10</span> AI: edit + ask your notes</h3>
+      <h3 class="guide-title"><span class="num">11</span> AI: edit + ask your notes</h3>
       <p class="guide-note">It needs a key: Settings → <b>Plugins</b> → <b>Claude API key</b>. Select a paragraph → right-click → <b>✨ AI Improves &amp; Research</b> → tick <b>Improve</b> and <b>Fix grammar</b> → <b>Submit</b> → <b>Insert below</b>, or <b>Show diff…</b> → tick what you want → <b>Apply to note</b>. The AI itself never deletes anything. The <b>Ask your notes</b> tab → <code>What did I plan for October?</code> → <b>Ask</b>: the AI reads your notes and answers with links to them; <b>Save as note</b> keeps the answer.</p>
       <div class="guide-shots"><img src="img/guide-13-ai-panel.webp" width="420" height="800" alt="ai panel" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /><img src="img/guide-13-ai-answer.webp" width="420" height="800" alt="ai answer" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-13-ai-diff.webp" width="720" height="273" alt="ai diff" loading="lazy" decoding="async" style="max-width:min(720px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-13-ai-ask.webp" width="420" height="800" alt="ai ask" loading="lazy" decoding="async" style="max-width:min(420px,100%)" /></div>
     </article>
     <article class="guide-item" id="colours">
-      <h3 class="guide-title"><span class="num">11</span> Colour + icon in the sidebar</h3>
+      <h3 class="guide-title"><span class="num">12</span> Colour + icon in the sidebar</h3>
       <p class="guide-note">Right-click a folder or a note → <b>Set color</b> and <b>Set icon</b> → a colour and an emoji by its name. They're stored in the vault itself and move with it to another computer.</p>
       <div class="guide-shots"><img src="img/guide-02-color-icon.webp" width="298" height="402" alt="color icon" loading="lazy" decoding="async" style="max-width:min(298px,100%)" /></div>
     </article>
     <article class="guide-item" id="sync">
-      <h3 class="guide-title"><span class="num">12</span> Sync + conflicts</h3>
+      <h3 class="guide-title"><span class="num">13</span> Sync + conflicts</h3>
       <p class="guide-note">At the foot of the sidebar → <b>Sync</b> → <b>Connect Google Drive</b> → <b>Sync Now</b>; from then on it syncs at launch and every 5 minutes. Edited one note on two computers? Both versions are kept, and the compare window lets you choose: <b>Keep original</b>, <b>Keep conflict copy</b> or <b>Decide later</b>.</p>
       <div class="guide-shots"><img src="img/guide-16-sync.webp" width="400" height="279" alt="sync" loading="lazy" decoding="async" style="max-width:min(400px,100%)" /></div>
       <div class="guide-shots"><img src="img/guide-16-conflict.webp" width="900" height="325" alt="conflict" loading="lazy" decoding="async" style="max-width:min(900px,100%)" /></div>
