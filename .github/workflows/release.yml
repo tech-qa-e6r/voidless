@@ -13,6 +13,15 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      source:
+        description: "Source repo to build from"
+        required: true
+        default: tech-qa-e6r/alt_text_editor
+        type: choice
+        options:
+          - tech-qa-e6r/alt_text_editor
+          - tech-qa-e6r/Voidless.app
 
 permissions:
   contents: write
@@ -56,7 +65,7 @@ jobs:
       - name: Checkout private source
         uses: actions/checkout@v4
         with:
-          repository: tech-qa-e6r/alt_text_editor
+          repository: ${{ inputs.source }}
           token: ${{ secrets.SOURCE_TOKEN }}
 
       - name: Setup Node
