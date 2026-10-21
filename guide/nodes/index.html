@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Node blocks — Voidless</title>
+  <meta name="description" content="How Node automations in Voidless are built: where notes come from, how filters split them, what actions do — block by block, with ready-made chains." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Voidless" />
+  <meta property="og:title" content="Voidless — Node blocks" />
+  <meta property="og:description" content="Where notes come from, how filters split them, what actions do — block by block." />
+  <meta property="og:url" content="https://voidless.app/guide/nodes" />
+  <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Bump ?v= whenever style.css changes: Pages/Cloudflare cache it for 10 min. -->
+  <link rel="stylesheet" href="../../style.css?v=2026-08-21b" />
+  <style>
+    /* Block colours follow the canvas: sources red, filters blue, actions green. */
+    :root { --src: #8a4a40; --flt: #3f6a9c; --act: #4a7a55; }
+    .nodes-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 70px 28px 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 52px;
+    }
+    .nodes-page > h2 { font-size: 28px; letter-spacing: -0.01em; margin: 0 0 8px; }
+    .nodes-intro { color: var(--text-dim); font-size: 15px; line-height: 1.6; max-width: 720px; margin: -40px 0 0; }
+    .nodes-intro b, .nodes-sec b, .nodes-sec li b { color: var(--text); font-weight: 600; }
+    .nodes-sec { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 80px; }
+    .nodes-sec > h3 {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent-hi);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nodes-sec > h3 .num { font-size: 12px; color: var(--text-mute); font-weight: 500; }
+    .nodes-sec p, .nodes-sec li { color: var(--text-dim); font-size: 15px; line-height: 1.65; max-width: 780px; }
+    .nodes-sec ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .nodes-sec ul li { padding-left: 16px; position: relative; }
+    .nodes-sec ul li::before { content: "·"; position: absolute; left: 4px; color: var(--text-mute); }
+
+    /* A block as it reads on the canvas. */
+    .blk {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg-raised);
+      border: 1px solid var(--border-2);
+      border-left: 3px solid var(--text-mute);
+      border-radius: 6px;
+      padding: 3px 9px;
+      white-space: nowrap;
+    }
+    .blk i { font-style: normal; color: var(--text-dim); }
+    .blk.src { border-left-color: var(--src); }
+    .blk.flt { border-left-color: var(--flt); }
+    .blk.act { border-left-color: var(--act); }
+    .port { font-family: var(--mono); font-size: 12px; color: var(--text-mute); white-space: nowrap; }
+    .port.yes { color: #6fae7c; }
+    .port.no { color: #c47a70; }
+
+    /* The shape of every graph: three columns. */
+    .shape { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .shape-col { border: 1px solid var(--border-2); border-radius: 10px; padding: 14px 16px; background: var(--bg-soft); }
+    .shape-col h4 { font-family: var(--mono); font-size: 13px; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .shape-col h4::before { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--c); }
+    .shape-col p { font-size: 14px; line-height: 1.55; }
+
+    /* A chain: block → port → block. Wraps on narrow screens. */
+    .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+    .chain .arr { color: var(--text-mute); font-family: var(--mono); font-size: 13px; }
+    .recipe { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border: 1px solid var(--border-2); border-radius: 10px; background: var(--bg-soft); }
+    .recipe h4 { font-size: 15px; color: var(--text); font-weight: 600; }
+    .recipe p { font-size: 14px; }
+
+    /* The block catalogue: one row per block. */
+    .catalog { display: flex; flex-direction: column; border: 1px solid var(--border-2); border-radius: 10px; overflow: hidden; }
+    .catalog > div { display: grid; grid-template-columns: 170px 1fr; gap: 14px; padding: 11px 16px; align-items: baseline; }
+    .catalog > div + div { border-top: 1px solid var(--border); }
+    .catalog p { font-size: 14px; line-height: 1.55; margin: 0; }
+    .catalog .once { font-family: var(--mono); font-size: 11.5px; color: var(--accent-hi); margin-left: 6px; white-space: nowrap; }
+
+    .nodes-toc { display: flex; flex-wrap: wrap; gap: 8px; margin: -24px 0 0; }
+    .nodes-toc a {
+      font-family: var(--mono); font-size: 12.5px; color: var(--text-dim);
+      border: 1px solid var(--border-2); border-radius: 999px; padding: 5px 12px;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .nodes-toc a:hover { border-color: var(--accent); color: var(--accent-hi); }
+    .nodes-toc .num { color: var(--text-mute); margin-right: 4px; }
+
+    @media (max-width: 760px) {
+      .shape { grid-template-columns: 1fr; }
+      .catalog > div { grid-template-columns: 1fr; gap: 4px; }
+    }
+    @media (max-width: 640px) {
+      .nodes-page { padding: 48px 16px 70px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── Nav ── -->
+  <header class="nav">
+    <a class="nav-brand" href="/">
+      <span class="dot"></span> Voidless
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/changelog">Changes</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <main class="nodes-page">
+    <h2>Node blocks</h2>
+    <p class="nodes-intro">A <b>Node</b> file is an automation drawn as blocks: notes flow from left to right — from where they come from, through filters, to what happens to them. Here is every block and how they connect. <b>Bold</b> is a name as it reads on screen. The rest of Voidless is in the <a href="/guide">Guide</a>.</p>
+
+    <nav class="nodes-toc">
+      <a href="#shape"><span class="num">01</span> the shape</a>
+      <a href="#links"><span class="num">02</span> links</a>
+      <a href="#runs"><span class="num">03</span> when it runs</a>
+      <a href="#sources"><span class="num">04</span> sources</a>
+      <a href="#filters"><span class="num">05</span> filters</a>
+      <a href="#actions"><span class="num">06</span> actions</a>
+      <a href="#recipes"><span class="num">07</span> ready chains</a>
+      <a href="#nothing"><span class="num">08</span> if nothing happens</a>
+    </nav>
+
+    <section class="nodes-sec" id="shape">
+      <h3><span class="num">01</span> The shape of every automation</h3>
+      <div class="shape">
+        <div class="shape-col" style="--c: var(--src)">
+          <h4>Source</h4>
+          <p>Where notes come from, and when the automation runs: a note was saved, a time came, you ran a command.</p>
+        </div>
+        <div class="shape-col" style="--c: var(--flt)">
+          <h4>Filter</h4>
+          <p>Splits the notes in two: the ones that match go out of <span class="port yes">yes</span>, the rest out of <span class="port no">no</span>. Optional, and any number in a row.</p>
+        </div>
+        <div class="shape-col" style="--c: var(--act)">
+          <h4>Action</h4>
+          <p>What happens to the notes that reach it: moved, renamed, a field set, listed in a note…</p>
+        </div>
+      </div>
+      <div class="chain">
+        <span class="blk src">Source</span><span class="arr">notes →</span>
+        <span class="blk flt">Filter</span><span class="arr"><span class="port yes">yes</span> →</span>
+        <span class="blk act">Action</span>
+      </div>
+      <p>The smallest automation is a source linked straight to an action. A filter only decides which notes go on.</p>
+    </section>
+
+    <section class="nodes-sec" id="links">
+      <h3><span class="num">02</span> Links</h3>
+      <ul>
+        <li>Drag from a dot on the right of a block (an output) to the dot on the left of another (its input). A source has one output, <b>notes</b>; a filter has two, <span class="port yes">yes</span> and <span class="port no">no</span>; an action has none — it's where notes end up.</li>
+        <li><b>Which output you link matters.</b> From <span class="port yes">yes</span> go the notes that match the filter, from <span class="port no">no</span> the ones that don't. Linked from the wrong one, the action gets the opposite notes.</li>
+        <li><b>Filters in a row mean “and”:</b> <span class="blk flt">Tag <i>work</i></span> <span class="arr"><span class="port yes">yes</span> →</span> <span class="blk flt">Date <i>older than 30 days</i></span> — notes tagged <i>work</i> that are older than 30 days.</li>
+        <li><b>Several links into one block mean “or”:</b> notes from both reach it, each once.</li>
+        <li>One output can feed several blocks: the same notes go to each of them.</li>
+        <li>The number on an output is how many notes <b>Run now</b> would send through it right now. To remove a link, click it and press <b>×</b> (or Delete).</li>
+      </ul>
+    </section>
+
+    <section class="nodes-sec" id="runs">
+      <h3><span class="num">03</span> When it runs</h3>
+      <ul>
+        <li><b>On</b> in the bar turns the automation on. A new one starts <b>off</b>, so a half-built one can't touch your notes.</li>
+        <li>Then the sources start it on their own: <b>On save</b> and <b>New note</b> two seconds after you stop typing, <b>Schedule</b> at its time, <b>Command</b> from ⌘P.</li>
+        <li><b>Run now</b> runs it at once, on or off — a good way to try it. Then <b>On save</b> and <b>Schedule</b> hand on every note of their folder, <b>New note</b> the ones made today, <b>Ticks</b> every ticked link; <b>Command</b> only works from ⌘P.</li>
+        <li>More than 20 changes in one run → it asks first. <b>To Trash</b> asks every time.</li>
+        <li>Every run can be undone: <b>Undo</b> in the notice, or <b>Report</b> → <b>History</b>. <b>Report</b> also shows what Run now would do, note by note, before you run it.</li>
+      </ul>
+    </section>
+
+    <section class="nodes-sec" id="sources">
+      <h3><span class="num">04</span> Sources — where notes come from</h3>
+      <p>Every source but <b>Ticks</b> watches a folder (empty = the whole vault) and can leave folders out with <b>Except</b>.</p>
+      <div class="catalog">
+        <div><span class="blk src">On save</span><p>The note you just saved, if it's in the folder.</p></div>
+        <div><span class="blk src">Schedule</span><p>Every note of the folder, once a day at the time set (HH:MM, empty = as soon as the app is open), on the days picked (none = every day).</p></div>
+        <div><span class="blk src">New note</span><p>A note made today, when it's saved — for setting new notes up.</p></div>
+        <div><span class="blk src">Command</span><p>The open note, when you run <b>Run automations on this note</b> from ⌘P.</p></div>
+        <div><span class="blk src">Ticks</span><p>The notes linked from ticked tasks of one note: tick <code>- [x] [[Some note]]</code> → <i>Some note</i> goes on. With <b>In any note</b> — the ticks of whichever note you save.</p></div>
+      </div>
+    </section>
+
+    <section class="nodes-sec" id="filters">
+      <h3><span class="num">05</span> Filters — which notes go on</h3>
+      <p>Each one sends the matching notes to <span class="port yes">yes</span> and the rest to <span class="port no">no</span>. A filter with nothing filled in sends nothing anywhere.</p>
+      <div class="catalog">
+        <div><span class="blk flt">YAML field</span><p>A field of the note: <i>is</i>, <i>is not</i>, <i>contains</i>, <i>is empty</i>, <i>is not empty</i>. <code>status</code> <i>is</i> <code>done</code>.</p></div>
+        <div><span class="blk flt">Tag</span><p>The note has the tag, in YAML <code>tags</code> or as <code>#tag</code> in the text. <code>project</code> also matches <code>project/web</code>.</p></div>
+        <div><span class="blk flt">Text</span><p>The note's name (or text) contains the words — or matches a pattern (regex). Case doesn't matter.</p></div>
+        <div><span class="blk flt">Folder</span><p>The note is inside the folder or its subfolders.</p></div>
+        <div><span class="blk flt">Date</span><p>Made or last changed more (or fewer) than N days ago.</p></div>
+        <div><span class="blk flt">Tasks</span><p>All its tasks are ticked — or some are still open. Notes without tasks go to <span class="port no">no</span>.</p></div>
+        <div><span class="blk flt">No links in</span><p>No other note links to it.</p></div>
+        <div><span class="blk flt">Words</span><p>More (or fewer) words than N.</p></div>
+        <div><span class="blk flt">First N</span><p>Sorts the notes (by change, by date made, by name) and sends the first N to <span class="port yes">yes</span>, the rest to <span class="port no">no</span>.</p></div>
+      </div>
+    </section>
+
+    <section class="nodes-sec" id="actions">
+      <h3><span class="num">06</span> Actions — what happens to them</h3>
+      <p>Blocks marked <span class="once" style="margin:0">once per note</span> do their thing to a note only once — saving it again doesn't rename it again or add a second line. An action with nothing filled in does nothing.</p>
+      <div class="catalog">
+        <div><span class="blk act">Move</span><p>Into a folder (made if it's not there). Links to the notes follow them.</p></div>
+        <div><span class="blk act">Set field</span><p>Sets a YAML field — or removes it. <code>{{date}}</code> in the value is today.</p></div>
+        <div><span class="blk act">Add tag</span><p>Adds a tag to the YAML <code>tags</code> — or takes it off.</p></div>
+        <div><span class="blk act">Template fields</span><p>Adds the YAML fields of a template (F1) the note doesn't have yet. Fields it has stay as they are.</p></div>
+        <div><span class="blk act">Rename<span class="once">once per note</span></span><p>By a pattern: <code>{{name}}</code>, <code>{{created}}</code>, <code>{{date}}</code>, <code>{{folder}}</code> or a field like <code>{{status}}</code>. A note whose field is still empty waits until it's filled. Links follow.</p></div>
+        <div><span class="blk act">Add a line<span class="once">once per note</span></span><p>Adds a line about each note to another note (a log): <code>{{link}}</code>, <code>{{name}}</code>, <code>{{date}}</code>, <code>{{folder}}</code>.</p></div>
+        <div><span class="blk act">Reminder<span class="once">once per note</span></span><p>Puts a reminder in the note, N days from the run at the time set.</p></div>
+        <div><span class="blk act">AI<span class="once">once per note</span></span><p>Claude reworks the note as you ask and puts its version below it (or in a copy). Your text stays; ⌘P → <b>Apply AI suggestion</b> takes what you pick. Runs only on <b>Run now</b> and ⌘P — each note is a paid request.</p></div>
+        <div><span class="blk act">List</span><p>Writes the notes into a <b>new note</b> as a checklist of links (or a table with fields as columns). The block makes that note itself and keeps it up to date; ticks you make there stay. It never writes over a note of yours.</p></div>
+        <div><span class="blk act">To Trash</span><p>Puts the notes in the system Trash. Asks every time.</p></div>
+      </div>
+    </section>
+
+    <section class="nodes-sec" id="recipes">
+      <h3><span class="num">07</span> Ready chains</h3>
+      <p>The first four are in <b>Examples</b> on the canvas bar. They come in with a folder or a name left empty, so nothing happens until you fill it in.</p>
+
+      <div class="recipe">
+        <h4>Done notes go to the archive</h4>
+        <div class="chain">
+          <span class="blk src">On save</span><span class="arr">→</span>
+          <span class="blk flt">YAML field <i>status is done</i></span><span class="arr"><span class="port yes">yes</span> →</span>
+          <span class="blk act">Move <i>Archive</i></span>
+        </div>
+      </div>
+
+      <div class="recipe">
+        <h4>Review notes untouched for a month</h4>
+        <div class="chain">
+          <span class="blk src">Schedule</span><span class="arr">→</span>
+          <span class="blk flt">Date <i>changed, older than 30 days</i></span><span class="arr"><span class="port yes">yes</span> →</span>
+          <span class="blk act">List <i>To review</i></span>
+        </div>
+        <div class="chain">
+          <span class="blk src">Ticks <i>in To review</i></span><span class="arr">→</span>
+          <span class="blk act">Move <i>Archive</i></span>
+        </div>
+        <p>Two chains in one file: the list fills up on its own; tick a note in it → it moves to the archive and leaves the list.</p>
+      </div>
+
+      <div class="recipe">
+        <h4>New notes get a field</h4>
+        <div class="chain">
+          <span class="blk src">New note</span><span class="arr">→</span>
+          <span class="blk act">Set field <i>status = inbox</i></span>
+        </div>
+      </div>
+
+      <div class="recipe">
+        <h4>A log of finished notes</h4>
+        <div class="chain">
+          <span class="blk src">On save</span><span class="arr">→</span>
+          <span class="blk flt">YAML field <i>status is done</i></span><span class="arr"><span class="port yes">yes</span> →</span>
+          <span class="blk act">Add a line <i>to Log</i></span>
+        </div>
+      </div>
+
+      <div class="recipe">
+        <h4>A live list by tag</h4>
+        <div class="chain">
+          <span class="blk src">On save</span><span class="arr">→</span>
+          <span class="blk flt">Tag <i>active</i></span><span class="arr"><span class="port yes">yes</span> →</span>
+          <span class="blk act">List <i>Active</i></span>
+        </div>
+        <p>Run now builds the list once; after that every save adds or removes just that note — the rest of the list and your ticks stay.</p>
+      </div>
+
+      <div class="recipe">
+        <h4>Ten latest notes</h4>
+        <div class="chain">
+          <span class="blk src">Schedule</span><span class="arr">→</span>
+          <span class="blk flt">First N <i>by change, newest first, 10</i></span><span class="arr"><span class="port yes">yes</span> →</span>
+          <span class="blk act">List <i>Recent</i></span>
+        </div>
+      </div>
+
+      <div class="recipe">
+        <h4>Both ways out of one filter</h4>
+        <div class="chain">
+          <span class="blk src">On save</span><span class="arr">→</span>
+          <span class="blk flt">YAML field <i>status is done</i></span>
+        </div>
+        <div class="chain" style="padding-left: 24px">
+          <span class="arr"><span class="port yes">yes</span> →</span><span class="blk act">Move <i>Archive</i></span>
+        </div>
+        <div class="chain" style="padding-left: 24px">
+          <span class="arr"><span class="port no">no</span> →</span><span class="blk act">List <i>In progress</i></span>
+        </div>
+        <p>Finished notes leave for the archive, the rest are listed in one note.</p>
+      </div>
+    </section>
+
+    <section class="nodes-sec" id="nothing">
+      <h3><span class="num">08</span> If nothing happens</h3>
+      <ul>
+        <li><b>On</b> isn't ticked — a new automation starts off. (Run now works anyway.)</li>
+        <li>The action is linked from <span class="port no">no</span> instead of <span class="port yes">yes</span> (or the other way round).</li>
+        <li>A block has an empty field — it says so at its foot (“…until then it does nothing”).</li>
+        <li><b>List</b> points at a note you already have, with text of your own — it won't write over it (“That note isn't a list”). Give it a new name; the block makes the note.</li>
+        <li>The list's own note never comes out of a source, so it doesn't list itself.</li>
+        <li><b>Schedule</b> with a time like <code>9</code> — it wants <code>09:00</code>; the field is outlined until then.</li>
+        <li><b>AI</b> doesn't run on save or on a schedule — only on Run now and ⌘P.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+  </footer>
+</body>
+</html>
