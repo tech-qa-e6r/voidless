@@ -1,11 +1,11 @@
 name: Release
 
-# Builds Voidless from the PRIVATE source repo and publishes signed installers +
+# Builds Voidless from the source repo (tech-qa-e6r/Voidless.app by default) and publishes signed installers +
 # the updater manifest (latest.json) as a release in THIS public repo. The app's
 # in-app updater points at this repo's latest release.
 #
 # Required secrets (in this public repo's Settings → Secrets → Actions):
-#   SOURCE_TOKEN                        PAT with read access to the private source repo
+#   SOURCE_TOKEN                        PAT with read access to the source repo(s)
 #   TAURI_SIGNING_PRIVATE_KEY           contents of ~/.tauri/voidless_updater.key
 #   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  the key password
 #   VITE_GOOGLE_CLIENT_ID               Google OAuth client id (build-time)
@@ -17,11 +17,11 @@ on:
       source:
         description: "Source repo to build from"
         required: true
-        default: tech-qa-e6r/alt_text_editor
+        default: tech-qa-e6r/Voidless.app
         type: choice
         options:
-          - tech-qa-e6r/alt_text_editor
           - tech-qa-e6r/Voidless.app
+          - tech-qa-e6r/alt_text_editor   # old private repo, kept as a fallback
 
 permissions:
   contents: write
