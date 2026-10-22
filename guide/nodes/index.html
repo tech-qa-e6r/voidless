@@ -213,6 +213,8 @@
       <h3><span class="num">06</span> Actions — what happens to them</h3>
       <p>Blocks marked <span class="once" style="margin:0">once per note</span> do their thing to a note only once — saving it again doesn't rename it again or add a second line, and a reminder you removed by hand doesn't come back. Their footer says how many notes they did before; <b>again</b> lets them do those once more. An action with an empty field does nothing (Rename, Reminder and AI come filled in, ready to go).</p>
       <div class="catalog">
+        <div><span class="blk act">Create note</span><p>Makes a note — folder, a name pattern, an F1 template if you like — and hands it on, so the blocks after it fill it. <code>{{date}}</code> in the name: one note a day; <code>{{name}}</code> or a field: one per incoming note. A note that's there already goes on as it is, never written over.</p></div>
+        <div><span class="blk act">Add text<span class="once">once per note</span></span><p>Adds a block of text at the end of each note it gets. After <b>Create note</b> it fills the new one. <code>{{date}}</code>, <code>{{time}}</code>, <code>{{name}}</code>.</p></div>
         <div><span class="blk act">Move</span><p>Into a folder (made if it's not there). Links to the notes follow them.</p></div>
         <div><span class="blk act">Set field</span><p>Writes <code>field: value</code> as a line at the end of the note — one line, updated in place on the next run — or removes it. <b>set if empty</b> leaves a value that's already there. Switch it to <b>in YAML</b> for a field that filters and boards read (<code>status</code>). <code>{{date}}</code> in the value is today, <code>{{time}}</code> the time.</p></div>
         <div><span class="blk act">Edit tags</span><p>Adds a tag to the YAML <code>tags</code> — or takes it off there; a <code>#tag</code> in the text stays.</p></div>
@@ -228,7 +230,7 @@
 
     <section class="nodes-sec" id="recipes">
       <h3><span class="num">07</span> Ready chains</h3>
-      <p>The first four are in <b>Examples</b> on the canvas bar. They come in with the folder of a move (or the field name) left empty, so nothing moves until you fill it in. The review list is ready at once: Run now writes it.</p>
+      <p>The first five are in <b>Examples</b> on the canvas bar. They come in with the folder of a move (or the field name) left empty — or the name of the note to make — so nothing happens until you fill it in. The review list is ready at once: Run now writes it.</p>
 
       <div class="recipe">
         <h4>Done notes go to the archive</h4>
@@ -260,6 +262,16 @@
           <span class="blk act">Set field <i>status = inbox, if empty, in YAML</i></span>
         </div>
         <p>“If empty”: a status you change by hand later that day stays. “In YAML”: filters and boards see it.</p>
+      </div>
+
+      <div class="recipe">
+        <h4>A daily note</h4>
+        <div class="chain">
+          <span class="blk src">Schedule <i>09:00</i></span><span class="arr">→</span>
+          <span class="blk act">Create note <i>Journal / {{date}}, template Daily</i></span><span class="arr">→</span>
+          <span class="blk act">Add text <i>- [ ] Inbox</i></span>
+        </div>
+        <p>One note a day: once it's there, the next runs that day leave it be.</p>
       </div>
 
       <div class="recipe">
