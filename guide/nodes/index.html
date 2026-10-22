@@ -161,7 +161,7 @@
     <section class="nodes-sec" id="links">
       <h3><span class="num">02</span> Links</h3>
       <ul>
-        <li>Drag from a dot on the right of a block (an output) to the dot on the left of another (its input). A source has one output, <b>notes</b>; a filter has two, <span class="port yes">yes</span> and <span class="port no">no</span>; an action has none — it's where notes end up.</li>
+        <li>Drag from a dot on the right of a block (an output) to the dot on the left of another (its input). A source has one output, <b>notes</b>; a filter has two, <span class="port yes">yes</span> and <span class="port no">no</span>; an action has none — it's where notes end up (all but <b>Create note</b>, which passes the note it made on to the blocks that fill it).</li>
         <li><b>Which output you link matters.</b> From <span class="port yes">yes</span> go the notes that match the filter, from <span class="port no">no</span> the ones that don't. Linked from the wrong one, the action gets the opposite notes.</li>
         <li><b>Filters in a row mean “and”:</b> <span class="blk flt">Tag <i>work</i></span> <span class="arr"><span class="port yes">yes</span> →</span> <span class="blk flt">Date <i>changed more than 30 days ago</i></span> — notes tagged <i>work</i> untouched for over 30 days.</li>
         <li><b>Several links into one block mean “or”:</b> notes from both reach it, each once.</li>
@@ -174,10 +174,10 @@
       <h3><span class="num">03</span> When it runs</h3>
       <ul>
         <li><b>On</b> in the bar turns the automation on. A new one starts <b>off</b>, so a half-built one can't touch your notes.</li>
-        <li>Then the sources start it on their own: <b>On save</b> and <b>New note</b> two seconds after you stop typing, <b>Schedule</b> at its time, <b>Command</b> from ⌘P.</li>
-        <li><b>Run now</b> runs it at once, on or off — a good way to try it. Then <b>On save</b> and <b>Schedule</b> hand on every note of their folder, <b>New note</b> the ones made today, <b>Ticks</b> every ticked link; <b>Command</b> only works from ⌘P.</li>
+        <li>Then the sources start it on their own: <b>On save</b> and <b>Made today</b> two seconds after you stop typing, <b>Schedule</b> at its time, <b>Command</b> from ⌘P (even when the automation is off).</li>
+        <li><b>Run now</b> runs it at once, on or off — a good way to try it. Then <b>On save</b> and <b>Schedule</b> pass on every note of their folder, <b>Made today</b> the ones made today, <b>Ticks</b> every ticked link; <b>Command</b> only works from ⌘P.</li>
         <li>More than 20 changes in one run → it asks first. <b>To Trash</b> asks every time.</li>
-        <li>Every run can be undone: <b>Undo</b> in the notice, or <b>Report</b> → <b>History</b>. <b>Report</b> also shows what Run now would do, note by note, before you run it.</li>
+        <li>Every run can be undone: <b>Undo</b> in the notice, or <b>Report</b> → <b>History</b>. <b>Report</b> → <b>Preview</b> shows what Run now would do, note by note, before you run it.</li>
       </ul>
     </section>
 
@@ -187,7 +187,7 @@
       <div class="catalog">
         <div><span class="blk src">On save</span><p>The note you just saved, if it's in the folder.</p></div>
         <div><span class="blk src">Schedule</span><p>Every note of the folder, once a day at the time set (HH:MM, empty = as soon as the app is open), on the days picked (none = every day).</p></div>
-        <div><span class="blk src">New note</span><p>A note made today, when it's saved — for setting new notes up.</p></div>
+        <div><span class="blk src">Made today</span><p>A note made today, when it's saved — for setting new notes up.</p></div>
         <div><span class="blk src">Command</span><p>The open note, when you run <b>Run automations on this note</b> from ⌘P.</p></div>
         <div><span class="blk src">Ticks</span><p>The notes linked from ticked tasks of one note: tick <code>- [x] [[Some note]]</code> → <i>Some note</i> goes on. With <b>In any note</b> — the ticks of whichever note you save.</p></div>
       </div>
@@ -220,10 +220,10 @@
         <div><span class="blk act">Edit tags</span><p>Adds a tag to the YAML <code>tags</code> — or takes it off there; a <code>#tag</code> in the text stays.</p></div>
         <div><span class="blk act">Template fields</span><p>Adds the YAML fields of a template (F1) the note doesn't have yet. Fields it has stay as they are.</p></div>
         <div><span class="blk act">Rename<span class="once">once per note</span></span><p>By a pattern: <code>{{name}}</code>, <code>{{created}}</code>, <code>{{date}}</code>, <code>{{folder}}</code> or a field like <code>{{status}}</code>. A note whose field is still empty waits until it's filled. Links follow.</p></div>
-        <div><span class="blk act">Add a line<span class="once">once per note</span></span><p>Adds a line about each note to another note (a log): <code>{{link}}</code>, <code>{{name}}</code>, <code>{{date}}</code>, <code>{{folder}}</code>.</p></div>
+        <div><span class="blk act">Log a line<span class="once">once per note</span></span><p>Adds a line about each note to another note (a log): <code>{{link}}</code>, <code>{{name}}</code>, <code>{{folder}}</code>, <code>{{date}}</code>, <code>{{time}}</code>.</p></div>
         <div><span class="blk act">Reminder<span class="once">once per note</span></span><p>Puts a reminder in the note, N days from the run at the time set.</p></div>
         <div><span class="blk act">AI<span class="once">once per note</span></span><p>Claude reworks the note as you ask and puts its version below it (or in a copy). Your text stays; ⌘P → <b>Apply AI suggestion</b> takes what you pick. Runs only on <b>Run now</b> and ⌘P — each note is a paid request.</p></div>
-        <div><span class="blk act">List</span><p>Writes the notes into a <b>new note</b> as a checklist of links (or a table with fields as columns). The block makes that note itself and keeps it up to date; ticks you make there stay. It never writes over a note of yours.</p></div>
+        <div><span class="blk act">List</span><p>Writes the notes into a <b>List note</b> as a checklist of links (or a table with fields as columns). The block makes that note itself and keeps it up to date; ticks you make there stay. It never writes over a note of yours.</p></div>
         <div><span class="blk act">To Trash</span><p>Puts the notes in the system Trash. Asks every time.</p></div>
       </div>
     </section>
@@ -258,7 +258,7 @@
       <div class="recipe">
         <h4>New notes get a field</h4>
         <div class="chain">
-          <span class="blk src">New note</span><span class="arr">→</span>
+          <span class="blk src">Made today</span><span class="arr">→</span>
           <span class="blk act">Set field <i>status = inbox, if empty, in YAML</i></span>
         </div>
         <p>“If empty”: a status you change by hand later that day stays. “In YAML”: filters and boards see it.</p>
@@ -279,7 +279,7 @@
         <div class="chain">
           <span class="blk src">On save</span><span class="arr">→</span>
           <span class="blk flt">YAML field <i>status is done</i></span><span class="arr"><span class="port yes">yes</span> →</span>
-          <span class="blk act">Add a line <i>to Log</i></span>
+          <span class="blk act">Log a line <i>to Log</i></span>
         </div>
       </div>
 
