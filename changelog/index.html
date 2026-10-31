@@ -61,12 +61,16 @@
         const kept = [];
         const keep = (html) => "\u0000" + (kept.push(html) - 1) + "\u0000";
         const restore = (t) => t.replace(/\u0000(\d+)\u0000/g, (m, i) => restore(kept[i]));
+        // A URL holding a placeholder (code or an image set aside above) is left as text:
+        // restored inside src/href, that markup would break out of the attribute.
         const html = escapeHtml(s.replace(/\u0000/g, ""))
           .replace(/`([^`]+)`/g, (m, code) => keep("<code>" + code + "</code>"))
-          .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => keep('<img class="release-img" alt="' + alt + '" src="' + safeSrc(src) + '">'))
-          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, text, href) => keep(safeHref(href)
-            ? '<a href="' + href + '" target="_blank" rel="noopener">' + emphasis(text) + "</a>"
-            : emphasis(text)));
+          .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => src.includes("\u0000") ? m
+            : keep('<img class="release-img" alt="' + alt + '" src="' + safeSrc(src) + '">'))
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, text, href) => href.includes("\u0000") ? m
+            : keep(safeHref(href)
+              ? '<a href="' + href + '" target="_blank" rel="noopener">' + emphasis(text) + "</a>"
+              : emphasis(text)));
         return restore(emphasis(html));
       };
 

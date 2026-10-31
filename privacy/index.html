@@ -56,21 +56,6 @@
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
-      <h3>Google Drive sync (optional)</h3>
-      <p>
-        If you connect Drive, files from your vault are uploaded to your own Google account
-        so your machines stay in step. Voidless asks for the <code>drive.file</code>
-        permission, which only reaches files and folders this app itself created or you
-        explicitly opened — the rest of your Drive stays invisible to it. It also asks for your
-        account's email address (<code>userinfo.email</code>), only to show
-        <em>Connected as …</em>. The tokens and that address are stored on your computer.
-        <em>Disconnect</em> in the Sync panel at the foot of the sidebar removes them from
-        this computer; it does not revoke the app's access on Google's side (see below).
-        Deleting the files is done from your Drive, by you.
-      </p>
-    </article>
-
-    <article class="card" style="margin-bottom: 16px;">
       <h3>Reminders through Google Calendar (optional)</h3>
       <p>
         If you turn on <em>Reminders on your phone</em> in Settings, Voidless creates a
@@ -78,12 +63,12 @@
         one event per reminder into it, so your phone can ring while the editor is closed. It
         asks for the <code>calendar.app.created</code> permission, which reaches only the
         calendars this app created — never your existing ones — and for the account's email
-        address, to show <em>Connected as …</em>. This is a sign-in of its own, separate from
-        Drive's; its tokens and the address are stored on your computer. The event carries the
-        text of the reminder line and the note's path; turn on <em>Hide reminder text</em> in
-        Settings and it sends a neutral title and no path instead. Turning reminders off
-        deletes the future events it created; <em>Disconnect</em> in Settings does that too and
-        removes the tokens from this computer, without revoking the app's access on Google's side.
+        address, to show <em>Connected as …</em>. Its tokens and the address are stored on
+        your computer. The event carries the text of the reminder line and the note's path;
+        turn on <em>Hide reminder text</em> in Settings and it sends a neutral title and no
+        path instead. Turning reminders off deletes the future events it created;
+        <em>Disconnect</em> in Settings does that too and removes the tokens from this
+        computer, without revoking the app's access on Google's side.
       </p>
     </article>
 
@@ -125,17 +110,16 @@
         Voidless writes no log files. Errors go to the app's console (⌘⌥I on a Mac,
         Ctrl+Alt+I on Windows), which stays on your computer and is never uploaded. If you send
         what it shows to support, you decide what to send — read it first. A
-        <code>🔴 logs</code> folder left in a vault by older versions is skipped by Drive sync
-        and by the AI.
+        <code>🔴 logs</code> folder left in a vault by older versions is skipped by the AI.
       </p>
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
       <h3>Taking it all back</h3>
       <p>
-        Delete the app and your notes remain — they are your files. <em>Disconnect</em> (Drive
-        in the Sync panel, Calendar in Settings) only removes the tokens from this computer; to
-        revoke the app's access to your Google account, remove Voidless at
+        Delete the app and your notes remain — they are your files. <em>Disconnect</em> in
+        Settings removes the Calendar tokens from this computer; to revoke the app's access
+        to your Google account, remove Voidless at
         <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.
         Clear the Claude API key in Settings to stop the AI; to revoke the key itself, delete it
         in your Anthropic Console. There is no account of ours to delete.
