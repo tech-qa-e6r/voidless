@@ -1,30 +1,29 @@
 name: Release
 
-# Builds Voidless from the source repo (tech-qa-e6r/Voidless.app by default) and publishes signed installers +
-# the updater manifest (latest.json) as a release in THIS public repo. The app's
-# in-app updater points at this repo's latest release.
+# Builds Voidless from the private source repo (tech-qa-e6r/Voidless.app) and publishes signed
+# installers + the updater manifest (latest.json) as a draft release in THIS public repo. The
+# app's in-app updater points at this repo's latest release.
 #
-# Required secrets (in this public repo's Settings → Secrets → Actions):
-#   SOURCE_TOKEN                        PAT with read access to the source repo(s)
+# Secrets live in the `release` environment (Settings → Environments → release), not at repo
+# level: only the job that names that environment gets them, and only after a reviewer approves
+# the run.
+#   SOURCE_TOKEN                        PAT with read access to the source repo
 #   TAURI_SIGNING_PRIVATE_KEY           contents of ~/.tauri/voidless_updater.key
 #   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  the key password
-#   VITE_GOOGLE_CLIENT_ID               Google OAuth client id (build-time)
-#   VITE_GOOGLE_CLIENT_SECRET           Google OAuth client secret (build-time)
+#   VITE_GOOGLE_CLIENT_ID               Google OAuth client id (build-time, Calendar push)
+#   VITE_GOOGLE_CLIENT_SECRET           Google OAuth client secret (build-time, Calendar push)
+#
+# Supply chain: every action is pinned to a full commit SHA (the tag it came from is in the
+# comment) and pnpm to an exact version. Bump them on purpose, never back to a moving tag.
+# Signing happens inside tauri-action's `tauri build`, so the key is in the same job as vite,
+# node_modules and every build.rs — keep dependencies few.
 
 on:
   workflow_dispatch:
-    inputs:
-      source:
-        description: "Source repo to build from"
-        required: true
-        default: tech-qa-e6r/Voidless.app
-        type: choice
-        options:
-          - tech-qa-e6r/Voidless.app
-          - tech-qa-e6r/alt_text_editor   # old private repo, kept as a fallback
 
+# Least privilege by default; a job that needs more asks for it below.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   # Pick the build number ONCE (shared by both matrix jobs so they produce the same
@@ -32,6 +31,10 @@ jobs:
   # today's existing releases (vYY.M.D.N, drafts included) and take max + 1.
   prepare:
     runs-on: ubuntu-latest
+    # Write only so the listing includes DRAFT releases (a read-only token doesn't see them,
+    # and a same-day build would reuse a draft's number). No checkout, no third-party code here.
+    permissions:
+      contents: write
     outputs:
       build_number: ${{ steps.bn.outputs.build_number }}
     steps:
@@ -47,6 +50,10 @@ jobs:
 
   release:
     needs: prepare
+    # Holds the secrets above; a required reviewer approves before the job starts.
+    environment: release
+    permissions:
+      contents: write # tauri-action creates the draft release and uploads the assets
     strategy:
       fail-fast: false
       matrix:
@@ -63,28 +70,33 @@ jobs:
 
     steps:
       - name: Checkout private source
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          repository: ${{ inputs.source }}
+          repository: tech-qa-e6r/Voidless.app
           token: ${{ secrets.SOURCE_TOKEN }}
+          # Don't leave the PAT in .git/config for the later steps (pnpm scripts, vite, build.rs).
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
-          version: 11
+          # Exact version, never a bare major: 11.18.0 was published 2026-07-29, before the npm
+          # worm of 2026-08-04, and is the last pre-incident pnpm this workflow built with.
+          version: 11.18.0
 
       - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable branch, 2026-10-16
         with:
+          toolchain: stable
           targets: ${{ matrix.rust-targets }}
 
       - name: Rust cache
-        uses: swatinem/rust-cache@v2
+        uses: swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           workspaces: ./alt-text-editor/src-tauri -> target
 
@@ -109,8 +121,10 @@ jobs:
       # tauri-action builds + signs, then creates/updates the release for this tag and
       # uploads installers, updater bundles (.sig) and a merged latest.json across the
       # macOS + Windows matrix. Draft so it can be reviewed before going live.
+      # The signing key has to be in this step: `tauri build` signs while bundling, and
+      # tauri-action has no separate signing step. Only this step gets it.
       - name: Build & release
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@84b9d35b5fc46c1e45415bdb6144030364f7ebc5 # v0.6.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
