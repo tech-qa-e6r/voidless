@@ -9,7 +9,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Voidless" />
   <meta property="og:title" content="Voidless — privacy" />
-  <meta property="og:description" content="Your notes stay on your disk. Nothing is uploaded unless you connect a service yourself." />
+  <meta property="og:description" content="Your notes stay on your disk. Nothing leaves it unless you connect a service or use the AI yourself." />
   <meta property="og:url" content="https://voidless.app/privacy" />
   <meta property="og:image" content="https://voidless.app/assets/screenshot.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -30,15 +30,19 @@
     <h2 class="section-title" style="text-align: left;">Privacy</h2>
     <p class="lead" style="margin: 0 0 28px; max-width: none;">
       Voidless is a desktop app that edits files on your computer. It has no accounts,
-      no servers of ours, and no analytics. Last updated 21 August 2026.
+      no servers of ours, and no analytics. Last updated 31 October 2026.
     </p>
 
     <article class="card" style="margin-bottom: 16px;">
       <h3>Your notes</h3>
       <p>
         Notes are plain <code>.md</code> files in a folder you choose. They are read and
-        written locally. Nothing is sent anywhere unless you turn on one of the
-        integrations below, and each one is off until you connect it yourself.
+        written locally. Next to them the app keeps a few small files of its own —
+        <code>_vault-meta.json</code> (folder colours and icons), <code>_vault-dates.json</code>
+        (note dates), <code>_automations.json</code> (what the automations already did) — so
+        they travel with the vault. Settings, Google tokens and your API key stay in the app's
+        settings file on this computer, outside the vault. Nothing is sent anywhere unless you
+        turn on one of the services below, and each one is off until you set it up yourself.
       </p>
     </article>
 
@@ -46,7 +50,8 @@
       <h3>What we never collect</h3>
       <p>
         No telemetry, no usage statistics, no crash reporting, no advertising identifiers,
-        no account, no email address. We do not operate a server that your notes pass through.
+        no account. Your email address never reaches us. We do not operate a server that your
+        notes pass through.
       </p>
     </article>
 
@@ -56,31 +61,53 @@
         If you connect Drive, files from your vault are uploaded to your own Google account
         so your machines stay in step. Voidless asks for the <code>drive.file</code>
         permission, which only reaches files and folders this app itself created or you
-        explicitly opened — the rest of your Drive stays invisible to it. Tokens are stored
-        on your computer. Disconnecting in Settings removes them; deleting the files is done
-        from your Drive, by you.
+        explicitly opened — the rest of your Drive stays invisible to it. It also asks for your
+        account's email address (<code>userinfo.email</code>), only to show
+        <em>Connected as …</em>. The tokens and that address are stored on your computer.
+        <em>Disconnect</em> in the Sync panel at the foot of the sidebar removes them from
+        this computer; it does not revoke the app's access on Google's side (see below).
+        Deleting the files is done from your Drive, by you.
       </p>
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
       <h3>Reminders through Google Calendar (optional)</h3>
       <p>
-        If you turn on reminders, Voidless creates a calendar of its own in your Google
-        account and writes one event per reminder into it, so your phone can ring while the
-        editor is closed. It asks for the <code>calendar.app.created</code> permission, which
-        reaches only the calendars this app created — never your existing ones. The event
-        carries the text of the reminder line and the note's path; turn on
-        <em>Hide reminder text</em> in Settings and it sends a neutral title instead.
-        Turning reminders off deletes the future events it created.
+        If you turn on <em>Reminders on your phone</em> in Settings, Voidless creates a
+        calendar of its own in your Google account, named after your vault folder, and writes
+        one event per reminder into it, so your phone can ring while the editor is closed. It
+        asks for the <code>calendar.app.created</code> permission, which reaches only the
+        calendars this app created — never your existing ones — and for the account's email
+        address, to show <em>Connected as …</em>. This is a sign-in of its own, separate from
+        Drive's; its tokens and the address are stored on your computer. The event carries the
+        text of the reminder line and the note's path; turn on <em>Hide reminder text</em> in
+        Settings and it sends a neutral title and no path instead. Turning reminders off
+        deletes the future events it created; <em>Disconnect</em> in Settings does that too and
+        removes the tokens from this computer, without revoking the app's access on Google's side.
       </p>
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
-      <h3>Translation and AI features (optional)</h3>
+      <h3>AI on your own key (optional)</h3>
       <p>
-        The flashcard translator sends the selected word or phrase to the provider whose API
-        key you entered, and nothing else. Without a key, the feature does not run.
+        The AI uses Anthropic's Claude API with the key you paste in Settings. The key is stored
+        on your computer. Requests go straight from your computer to Anthropic, under your own
+        API account — no server of ours in between — and Anthropic's terms for its API apply to
+        them. Without a key nothing is sent; with one, only these send anything, and only when
+        you use them:
       </p>
+      <ul>
+        <li><strong>Edit text</strong> — the text you selected (with nothing selected, the
+          paragraph the caret is in, shown selected first) and the points or instruction you
+          gave, when you press <em>Submit</em>.</li>
+        <li><strong>Ask your notes</strong> — your question and the earlier questions and
+          answers of that chat, plus what the AI looks up to answer: note paths with a line of
+          context for each search hit, lists of note paths, and the notes it opens, up to
+          20,000 characters of each.</li>
+        <li><strong>The AI node</strong> — the node's instruction and the text of each note it
+          runs on (its YAML properties stay out). It runs only on <em>Run now</em>, ⌘P or a
+          note's right-click menu — never on a save or a schedule — and asks before it sends.</li>
+      </ul>
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
@@ -95,18 +122,23 @@
     <article class="card" style="margin-bottom: 16px;">
       <h3>Diagnostic logs</h3>
       <p>
-        Logs are written into your vault and stay there. They are never uploaded. If you send
-        one to support, you decide what to send — read it first, it is a plain text file.
+        Voidless writes no log files. Errors go to the app's console (⌘⌥I on a Mac,
+        Ctrl+Alt+I on Windows), which stays on your computer and is never uploaded. If you send
+        what it shows to support, you decide what to send — read it first. A
+        <code>🔴 logs</code> folder left in a vault by older versions is skipped by Drive sync
+        and by the AI.
       </p>
     </article>
 
     <article class="card" style="margin-bottom: 16px;">
       <h3>Taking it all back</h3>
       <p>
-        Delete the app and your notes remain — they are your files. Disconnect Google in
-        Settings to revoke the app's access, or remove it at
+        Delete the app and your notes remain — they are your files. <em>Disconnect</em> (Drive
+        in the Sync panel, Calendar in Settings) only removes the tokens from this computer; to
+        revoke the app's access to your Google account, remove Voidless at
         <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.
-        There is no account of ours to delete.
+        Clear the Claude API key in Settings to stop the AI; to revoke the key itself, delete it
+        in your Anthropic Console. There is no account of ours to delete.
       </p>
     </article>
 
