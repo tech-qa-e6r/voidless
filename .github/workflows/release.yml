@@ -1,13 +1,26 @@
 name: Release
 
-# Builds Voidless from the private source repo (tech-qa-e6r/Voidless.app) and publishes signed
-# installers + the updater manifest (latest.json) as a draft release in THIS public repo. The
-# app's in-app updater points at this repo's latest release.
+# Builds Voidless from ONE exact commit of the source repo (SOURCE_REPO below) and publishes
+# signed installers + the updater manifest (latest.json) as a DRAFT release in THIS public repo.
+# The app's in-app updater points at this repo's latest published release, so nothing reaches
+# users until the draft is checked and published by hand.
+#
+# Start a release with the full 40-character SHA of a commit on the source repo's main:
+#   gh workflow run release.yml -R tech-qa-e6r/voidless -f source_sha=<sha>
+#
+# Jobs:
+#   prepare  checks source_sha's format and picks the build number. No checkout, no secrets.
+#   build    macOS + Windows matrix behind the `release` environment (a reviewer approves the run
+#            first). Checks out source_sha, refuses it unless the source repo's main contains it,
+#            builds and signs, and uploads the installers + .sig files as run artifacts. Its token
+#            is read-only, so build code (vite, node_modules, build.rs) can't create or change a
+#            release.
+#   publish  runs only when both builds pass. No checkout, no third-party code, no environment
+#            secrets: downloads the artifacts, writes latest.json and creates the draft with gh.
 #
 # Secrets live in the `release` environment (Settings → Environments → release), not at repo
-# level: only the job that names that environment gets them, and only after a reviewer approves
-# the run.
-#   SOURCE_TOKEN                        PAT with read access to the source repo
+# level: only the build job names that environment, and only after a reviewer approves the run.
+#   SOURCE_TOKEN                        PAT with read access to the private source repo (see SOURCE_REPO)
 #   TAURI_SIGNING_PRIVATE_KEY           contents of ~/.tauri/voidless_updater.key
 #   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  the key password
 #   VITE_GOOGLE_CLIENT_ID               Google OAuth client id (build-time, Calendar push)
@@ -15,15 +28,33 @@ name: Release
 #
 # Supply chain: every action is pinned to a full commit SHA (the tag it came from is in the
 # comment) and pnpm to an exact version. Bump them on purpose, never back to a moving tag.
-# Signing happens inside tauri-action's `tauri build`, so the key is in the same job as vite,
-# node_modules and every build.rs — keep dependencies few.
+# pnpm-lock.yaml and Cargo.lock are enforced, and there is no build cache (a poisoned cache would
+# carry one bad build into later releases). `tauri build` signs while bundling, so the key is in
+# the same step as vite, node_modules and every build.rs — keep dependencies few.
 
 on:
   workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Full 40-character SHA of the commit on the source repo's main to build
+        required: true
+        type: string
 
 # Least privilege by default; a job that needs more asks for it below.
 permissions:
   contents: read
+
+# One release at a time: a second run waits instead of racing for the same build number.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  # The code repo releases are built from. This is the ONLY place it is named.
+  # On the day the code repo goes public: point this at the new public repo, delete the `token:`
+  # line in the build job's checkout, then delete the SOURCE_TOKEN secret from the `release`
+  # environment and revoke that PAT.
+  SOURCE_REPO: tech-qa-e6r/Voidless.app
 
 jobs:
   # Pick the build number ONCE (shared by both matrix jobs so they produce the same
@@ -38,6 +69,16 @@ jobs:
     outputs:
       build_number: ${{ steps.bn.outputs.build_number }}
     steps:
+      # Here, so a mistyped SHA fails before a reviewer is asked to approve the build.
+      - name: Check source_sha
+        env:
+          SHA: ${{ inputs.source_sha }}
+        run: |
+          if [[ ! "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::source_sha must be a full 40-character lowercase commit SHA"
+            exit 1
+          fi
+
       - name: Compute build number
         id: bn
         env:
@@ -48,34 +89,60 @@ jobs:
                 --jq "[.[].tagName | select(startswith(\"v${core}.\")) | ltrimstr(\"v${core}.\") | tonumber] | max // 0")
           echo "build_number=$((max + 1))" >> "$GITHUB_OUTPUT"
 
-  release:
+  build:
     needs: prepare
     # Holds the secrets above; a required reviewer approves before the job starts.
     environment: release
+    # Read-only on purpose: this job runs all third-party build code, so it gets no token that
+    # can create or change releases. The publish job does that.
     permissions:
-      contents: write # tauri-action creates the draft release and uploads the assets
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         include:
           # macOS: universal binary so one .dmg runs on both Intel and Apple Silicon.
-          - os: macos-latest
+          - name: macos
+            os: macos-latest
             args: "--target universal-apple-darwin"
             rust-targets: "aarch64-apple-darwin,x86_64-apple-darwin"
-          - os: windows-latest
+          - name: windows
+            os: windows-latest
             args: ""
             rust-targets: ""
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout private source
+      - name: Checkout source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          repository: tech-qa-e6r/Voidless.app
+          repository: ${{ env.SOURCE_REPO }}
+          # Both matrix jobs build exactly this commit.
+          ref: ${{ inputs.source_sha }}
+          # Full history, so the next step can see the source repo's main.
+          fetch-depth: 0
+          # Only while the source repo is private: delete this line when it goes public.
           token: ${{ secrets.SOURCE_TOKEN }}
-          # Don't leave the PAT in .git/config for the later steps (pnpm scripts, vite, build.rs).
+          # Don't leave the token in .git/config for the later steps (pnpm scripts, vite, build.rs).
           persist-credentials: false
+
+      # A SHA alone isn't enough: GitHub serves commits from any fork through the parent repo,
+      # so build only a commit that the source repo's main already contains.
+      - name: Check the commit is on main
+        shell: bash
+        env:
+          SHA: ${{ inputs.source_sha }}
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$SHA" ]; then
+            echo "::error::the checkout is not source_sha"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$SHA" origin/main; then
+            echo "::error::source_sha is not on main of $SOURCE_REPO"
+            exit 1
+          fi
+          echo "Building $SOURCE_REPO@$SHA"
 
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
@@ -95,10 +162,10 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.rust-targets }}
 
-      - name: Rust cache
-        uses: swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
-        with:
-          workspaces: ./alt-text-editor/src-tauri -> target
+      # Fails when Cargo.lock doesn't match Cargo.toml, instead of resolving new crates unreviewed.
+      - name: Fetch Rust crates
+        working-directory: alt-text-editor/src-tauri
+        run: cargo fetch --locked
 
       - name: Install dependencies
         working-directory: alt-text-editor
@@ -116,25 +183,154 @@ jobs:
         id: ver
         shell: bash
         working-directory: alt-text-editor
-        run: echo "version=$(node -p "require('./src-tauri/tauri.conf.json').version.replace('+','.')")" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(node -p "require('./src-tauri/tauri.conf.json').version")" >> "$GITHUB_OUTPUT"
 
-      # tauri-action builds + signs, then creates/updates the release for this tag and
-      # uploads installers, updater bundles (.sig) and a merged latest.json across the
-      # macOS + Windows matrix. Draft so it can be reviewed before going live.
-      # The signing key has to be in this step: `tauri build` signs while bundling, and
-      # tauri-action has no separate signing step. Only this step gets it.
-      - name: Build & release
-        uses: tauri-apps/tauri-action@84b9d35b5fc46c1e45415bdb6144030364f7ebc5 # v0.6.2
+      # Builds and signs the installers and the updater bundles (.sig); creates no release.
+      # The signing key has to be in this step: `tauri build` signs while bundling. Only this
+      # step gets it and the Google values.
+      - name: Build & sign
+        shell: bash
+        working-directory: alt-text-editor
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
           VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.VITE_GOOGLE_CLIENT_SECRET }}
+          ARGS: ${{ matrix.args }}
+        # $ARGS unquoted on purpose: it is empty or "--target universal-apple-darwin".
+        run: pnpm tauri build $ARGS
+
+      # Exactly the files the release ships, under their release names (the macOS updater bundle
+      # gets the _universal suffix it has always had there), plus VERSION for the publish job.
+      - name: Collect bundles
+        shell: bash
+        env:
+          LEG: ${{ matrix.name }}
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          mkdir stage
+          case "$LEG" in
+            macos)
+              b=alt-text-editor/src-tauri/target/universal-apple-darwin/release/bundle
+              cp "$b/dmg/Voidless_${VERSION}_universal.dmg" stage/
+              cp "$b/macos/Voidless.app.tar.gz" stage/Voidless_universal.app.tar.gz
+              cp "$b/macos/Voidless.app.tar.gz.sig" stage/Voidless_universal.app.tar.gz.sig
+              ;;
+            windows)
+              b=alt-text-editor/src-tauri/target/release/bundle
+              cp "$b/msi/Voidless_${VERSION}_x64_en-US.msi" "$b/msi/Voidless_${VERSION}_x64_en-US.msi.sig" stage/
+              cp "$b/nsis/Voidless_${VERSION}_x64-setup.exe" "$b/nsis/Voidless_${VERSION}_x64-setup.exe.sig" stage/
+              ;;
+            *)
+              echo "::error::unknown matrix leg"
+              exit 1
+              ;;
+          esac
+          printf '%s' "$VERSION" > stage/VERSION
+          ls -l stage
+
+      - name: Upload bundles
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          projectPath: alt-text-editor
-          tagName: v${{ steps.ver.outputs.version }}
-          releaseName: Voidless v${{ steps.ver.outputs.version }}
-          releaseDraft: true
-          includeUpdaterJson: true
-          args: ${{ matrix.args }}
+          name: bundle-${{ matrix.name }}
+          path: stage/
+          if-no-files-found: error
+          # Only this run's publish job needs them, and signed-in users can download a public
+          # repo's artifacts, so keep them the shortest time GitHub allows.
+          retention-days: 1
+
+  # Creates the draft. Holds the only write token and none of the environment secrets; it runs
+  # no code from the source repo or node_modules, only the shell, jq and gh on GitHub's runner.
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # creates the draft release and uploads its assets
+    steps:
+      - name: Download bundles
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: bundle-*
+          path: dl
+
+      # Copies only the expected files, by name, so a stray file in an artifact is never
+      # published, and checks that both builds stamped the same version.
+      - name: Collect release assets
+        id: assets
+        run: |
+          version="$(cat dl/bundle-macos/VERSION)"
+          if [ "$version" != "$(cat dl/bundle-windows/VERSION)" ]; then
+            echo "::error::macOS and Windows stamped different versions (the date changed between the builds?); run the workflow again"
+            exit 1
+          fi
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+$ ]]; then
+            echo "::error::unexpected version format"
+            exit 1
+          fi
+          mkdir out
+          for f in "Voidless_${version}_universal.dmg" Voidless_universal.app.tar.gz Voidless_universal.app.tar.gz.sig; do
+            cp "dl/bundle-macos/$f" out/
+          done
+          for f in "Voidless_${version}_x64_en-US.msi" "Voidless_${version}_x64-setup.exe"; do
+            cp "dl/bundle-windows/$f" "dl/bundle-windows/$f.sig" out/
+          done
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          # Tag vYY.M.D.N: the version with its "+" written as ".".
+          echo "tag=v${version/+/.}" >> "$GITHUB_OUTPUT"
+
+      # The latest.json tauri-action used to write: the signature is the .sig file's text as is,
+      # the URL points at this tag's asset ("+" written as %2B), and the four darwin keys share
+      # the universal bundle.
+      - name: Write latest.json
+        env:
+          VERSION: ${{ steps.assets.outputs.version }}
+          TAG: ${{ steps.assets.outputs.tag }}
+        run: |
+          app=Voidless_universal.app.tar.gz
+          msi="Voidless_${VERSION}_x64_en-US.msi"
+          nsis="Voidless_${VERSION}_x64-setup.exe"
+          jq -n \
+            --arg version "$VERSION" \
+            --arg date "$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)" \
+            --arg base "https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG" \
+            --arg app "$app" --rawfile app_sig "out/$app.sig" \
+            --arg msi "$msi" --rawfile msi_sig "out/$msi.sig" \
+            --arg nsis "$nsis" --rawfile nsis_sig "out/$nsis.sig" \
+            'def entry($file; $sig): {signature: $sig, url: "\($base)/\($file | @uri)"};
+             {
+               version: $version,
+               notes: "",
+               pub_date: $date,
+               platforms: {
+                 "darwin-aarch64": entry($app; $app_sig),
+                 "darwin-x86_64": entry($app; $app_sig),
+                 "darwin-aarch64-app": entry($app; $app_sig),
+                 "darwin-x86_64-app": entry($app; $app_sig),
+                 "windows-x86_64": entry($msi; $msi_sig),
+                 "windows-x86_64-msi": entry($msi; $msi_sig),
+                 "windows-x86_64-nsis": entry($nsis; $nsis_sig)
+               }
+             }' > out/latest.json
+          cat out/latest.json
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.assets.outputs.tag }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          # A draft has no git tag yet, so GitHub would take a second draft with the same tag.
+          # Refuse instead (after a half-finished run: delete that draft, then run again).
+          drafts=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+                   --jq "[.[] | select(.draft and .tag_name == \"$TAG\")] | length")
+          if [ "$drafts" != 0 ]; then
+            echo "::error::a draft for $TAG already exists; delete it and run again"
+            exit 1
+          fi
+          gh release create "$TAG" out/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft \
+            --target "$GITHUB_SHA" \
+            --title "Voidless $TAG" \
+            --notes ""
+          echo "Draft $TAG built from $SOURCE_REPO@$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
