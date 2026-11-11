@@ -124,6 +124,7 @@
     <p class="nodes-intro">A <b>Node</b> file is an automation drawn as blocks: notes flow from left to right — from where they come from, through filters, to what happens to them. Here is every block and how they connect. <b>Bold</b> is a name as it reads on screen. The rest of Voidless is in the <a href="/guide">Guide</a>.</p>
 
     <nav class="nodes-toc">
+      <a href="#cheat"><span class="num">00</span> cheat sheet</a>
       <a href="#shape"><span class="num">01</span> the shape</a>
       <a href="#links"><span class="num">02</span> links</a>
       <a href="#runs"><span class="num">03</span> when it runs</a>
@@ -133,6 +134,49 @@
       <a href="#recipes"><span class="num">07</span> ready chains</a>
       <a href="#nothing"><span class="num">08</span> if nothing happens</a>
     </nav>
+
+    <section class="nodes-sec" id="cheat">
+      <h3><span class="num">00</span> Cheat sheet — what to use when</h3>
+      <p>Every automation answers three questions: <b>When?</b> → <b>Which notes?</b> → <b>What to do?</b> Pick one block for each, and you have it.</p>
+      <div class="shape">
+        <div class="shape-col" style="--c: var(--src)">
+          <h4>When — the source</h4>
+          <ul>
+            <li><b>On save</b> — react to an edit, one note at a time</li>
+            <li><b>Made today</b> — set up a new note</li>
+            <li><b>On schedule</b> — a whole folder once a day; dates and “old” only here</li>
+            <li><b>From ⌘P</b> (Ctrl+P on Windows) — by hand on one note, and for AI</li>
+            <li><b>Ticked links</b> — a checklist as a remote: tick a [[note]]</li>
+          </ul>
+        </div>
+        <div class="shape-col" style="--c: var(--flt)">
+          <h4>Which notes — filters, yes / no</h4>
+          <ul>
+            <li>Content: <b>YAML field</b>, <b>Tag</b>, <b>Text</b>, <b>Tasks</b>, <b>Words</b></li>
+            <li>Place: <b>Folder</b></li>
+            <li>Time: <b>Date</b>, <b>Untouched</b> — after <b>On schedule</b></li>
+            <li>Links: <b>No links to it</b></li>
+            <li>Pick: <b>First N</b></li>
+          </ul>
+        </div>
+        <div class="shape-col" style="--c: var(--act)">
+          <h4>What to do — the action</h4>
+          <ul>
+            <li>Sort: <b>Move</b>, <b>Rename</b> (with {{name}}), <b>To Trash</b></li>
+            <li>Mark: <b>Set field</b>, <b>Edit tags</b>, <b>Template fields</b></li>
+            <li>Write: <b>Add text</b>, <b>Log a line</b>, <b>Reminder</b></li>
+            <li>Collect: <b>List</b> — a checklist in one note</li>
+            <li>Create: <b>Create note</b> — {{date}} one a day, {{name}} one per note</li>
+            <li><b>AI</b> — only on <b>Run now</b> and ⌘P</li>
+          </ul>
+        </div>
+      </div>
+      <ul>
+        <li><b>Date</b> and <b>Untouched</b> go after <b>On schedule</b>: a note that was just saved is always changed today.</li>
+        <li>Orange on a card means it won't work this way — the card says why. Links that can't work aren't drawn at all.</li>
+        <li>Not sure where to start? <b>Examples</b> on the canvas has five ready automations — take one and change the folders. The same sheet is behind <b>?</b> on the canvas.</li>
+      </ul>
+    </section>
 
     <section class="nodes-sec" id="shape">
       <h3><span class="num">01</span> The shape of every automation</h3>
